@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style2.css">
+  <link rel="icon" href="../src/black-cat-test.gif" type="image/gif" />
+  <title>Welcome to my Page</title>
+</head>
+
+<body>
+  <div class="lang-dropdown">
+  <button type="button" onclick="toggleLang()" class="lang-btn">
+    <img src="../src/globe-icon-white-8.jpg" alt="lang" width="40">
+  </button>
+
+  <ul id="langMenu" class="lang-menu">
+    <li>
+      <a href="#" class="en">
+        <img src="https://flagsapi.com/US/flat/32.png" alt="English">
+      </a>
+    </li>
+    <li>
+      <a href="resume-th.html" class="th">
+        <img src="https://flagsapi.com/TH/flat/32.png" alt="Thai">
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+
+
+  <!-- HERO / CARD SCENE -->
+  <section class="scene">
+    <div id="card" class="card">
+
+      <!-- FRONT -->
+      <div class="card-face front">
+        <h1>Treerawat</h1>
+        <img src="../src/me.png" alt="me" width="150px">
+        <p>IT Student</p>
+        <p>Nakhon Sawan Rajabhat University</p>
+      </div>
+
+      <!-- BACK -->
+      <div class="card-face back">
+        <h2>Interested In</h2>
+        <p>Web Development</p>
+        <p>UI & Interaction</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT ME -->
+  <section class="about">
+    <div class="about-text">
+      <h2>About Me</h2>
+      <p>
+        Hello, my name is Treerawat Tanlahakit, but you can call me First.
+        I am currently studying Information Technology.
+      </p>
+      <p>
+        I enjoy learning web development, especially creating interactive
+        user interfaces using HTML, CSS, and JavaScript.
+      </p>
+      <p>
+        And also I am still learning and improving my skills, but I enjoy building small projects to practice and
+        understand how things work.
+        I believe learning by doing is the best way to grow as a developer.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- LEARNING -->
+  <section class="learning">
+    <h2>What I'm Learning</h2>
+
+    <div class="learning-cards">
+      <div class="learn-card"><img src="../src/html.png" alt="html" width="70px" height="70px"><img src="../src/css.png"
+          alt="css" width="62px" height="62px"></div>
+      <div class="learn-card"><img src="../src/js.png" alt="js" width="70px" height="70px"></div>
+      <div class="learn-card" id="learn-card">UI Animation</div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact">
+    <h2>Contact</h2>
+    <p>Email: <span id="email">first@example.com</span></p>
+    <p>GitHub: github.com/yourname</p>
+  </section>
+
+  <script src="js/script2.js"></script>
+</body>
+
+</html>

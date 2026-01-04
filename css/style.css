@@ -1,0 +1,226 @@
+@font-face {
+  font-family: 'minecraft'; 
+  src: url('C:\Users\User\AppData\Local\Microsoft\Windows\Fonts\minecraft.ttf'); /* ใส่ที่อยู่ของไฟล์ฟอนต์ในโฟลเดอร์งาน */
+}
+
+code {
+  font-family: 'minecraft', monospace;
+}
+
+
+body {
+    background: #aca9a9;
+    height: 100vh;
+    margin: 0;
+    color: #e5e7eb;
+    font-family: monospace;
+}
+
+.chat-window {
+    font-size: large;
+    width: 320px;
+    background: black;
+    border: 5px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.6s ease-in-out;
+}
+
+
+.chat-header {
+    padding: 12px 14px 0px;
+    background: white;
+    font-family: 'minecraft', monospace;
+    color: black;
+    border-radius: 5px 5px 0px 0px;
+}
+
+
+.messages {
+    flex: 1;
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.msg {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+
+.me {
+    align-self: flex-start;
+    background: #4d4d4e;
+    color: #fff;
+    border-bottom-left-radius: 4px;
+}
+
+
+.other {
+    align-self: flex-end;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom-right-radius: 4px;
+}
+
+
+.composer {
+    float: bottom;
+    display: flex;
+    padding: 7px;
+    gap: 6px;
+}
+
+
+textarea {
+    flex: 1;
+    resize: none;
+    background: black;
+    border: 3px solid white;
+    border-radius: 5px;
+    color: white;
+}
+
+
+#sendBtn {
+    background: transparent;
+    background-color: white;
+    cursor: pointer;
+    font-family: 'minecraft', monospace;
+    font-size: 16px;
+    padding-left: 14px;
+    padding-right: 14px;
+    
+}
+
+
+#close{
+    font-style: bold;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: black;
+    cursor: pointer;
+    float: right;
+    font-family: 'minecraft', monospace;
+}
+
+
+  
+#chatWindow {
+    position: absolute;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    top: calc(50% - 210px);
+    left: calc(50% - 160px);
+    transition: all 0.6s ease-in-out;
+}
+
+#chatWindow.expanded{
+    width: 100vw !important;
+    height: 100vh !important;
+    top: 0 !important;
+    left: 0 !important;
+    border-radius: 0 !important;
+    transform: none !important;
+}
+
+
+#overlayFade {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease;
+}
+
+#overlayFade.show {
+    opacity: 1;
+}
+
+p{
+  font-family: monospace;  
+}
+
+
+#welcomeScreen {
+    font-family: monospace;
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: white;
+    font-size: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease-in-out;
+    z-index: 9999;
+}
+
+#welcomeScreen.show {
+    opacity: 1;
+}
+
+.welcome-type {
+    position: fixed;
+    inset: 0;
+    background: black;
+    font-size: 5rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    letter-spacing: 0.2rem;
+}
+
+/* cursor type */
+.cursor {
+    display: inline-block;
+    width: 20px;
+    margin-left: 5px;
+    animation: blink 0.7s infinite step-start;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+#chatBody {
+    border: 3px solid white;
+    border-radius: 0px 0px 5px 5px;
+    display: flex;
+    flex-direction: column;
+    height: 360px; /*  ความสูงตอนปกติที่น้องต้องการ */
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+
+#chatBody.hidden {
+    opacity: 0;
+    height: 0;
+}
+
+#chatWindow.expanded #chatBody {
+    height: auto;
+    flex: 1;       
+}
+
+#chat-header {
+  user-select: none;
+  touch-action: none; /* 🚫 ปิด pinch/scroll ตอนลาก */
+}
