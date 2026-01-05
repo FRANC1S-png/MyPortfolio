@@ -220,7 +220,7 @@ p{
     flex: 1;       
 }
 
-#chat-header {
+#chatHeader {
   user-select: none;
-  touch-action: none; /* 🚫 ปิด pinch/scroll ตอนลาก */
+  touch-action: none; 
 }

@@ -157,3 +157,13 @@ body {
 }
 
 
+.info {
+  position: absolute;
+  right: 220px;
+  top: 70px;
+  font-size: 16px;
+}
+
+.img-con {
+  margin-bottom: 120px;
+}
