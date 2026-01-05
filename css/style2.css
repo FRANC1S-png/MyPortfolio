@@ -174,3 +174,14 @@ body {
 .img-con {
   margin-bottom: 120px;
 }
+
+.fav {
+  position: absolute;
+  top: 220px;
+  padding-top: 20px;
+}
+
+.fav p {
+  margin: 0;
+  padding: 0;
+}
