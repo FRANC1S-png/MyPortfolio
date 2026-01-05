@@ -164,6 +164,13 @@ body {
   font-size: 16px;
 }
 
+#info-th{
+  position: absolute;
+  right: 170px;
+  top: 70px;
+  font-size: 16px;
+}
+
 .img-con {
   margin-bottom: 120px;
 }
