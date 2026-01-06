@@ -105,7 +105,7 @@ body {
 /* ========== CONTACT ========== */
 .contact {
   padding: 80px 10%;
-  border-top: 1px solid #333;
+  position: space-between;
 }
 
 #card {
@@ -184,4 +184,24 @@ body {
 .fav p {
   margin: 0;
   padding: 0;
+}
+
+.download-btn {
+  font-family: monospace;
+  padding: 20px;
+  font-size: 16px;
+  color: black;
+  background-color: white;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  margin: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center
+}
+
+.download-btn:hover {
+  border: 1px solid rgb(136, 136, 136);
+  color: black;
 }
