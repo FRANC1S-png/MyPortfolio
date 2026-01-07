@@ -16,17 +16,23 @@ body {
 
 /* ========== CARD ========== */
 .scene {
-  height: 40vh;
+  min-height: 60vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  /* align-items: flex-start; */
+  align-items: center;
+  padding: 0;
   perspective: 1200px;
 }
 
 .card {
-  margin: 60px;
+  /* margin: 60px;
   width: 600px;
-  height: 350px;
+  height: 350px; */
+  width: min(90vw, 600px);
+  aspect-ratio: 600 / 350;
+  height: auto;
+
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.1s linear;
@@ -158,9 +164,6 @@ body {
 
 
 .info {
-  position: absolute;
-  right: 220px;
-  top: 70px;
   font-size: 16px;
 }
 
@@ -204,4 +207,73 @@ body {
 .download-btn:hover {
   border: 1px solid rgb(136, 136, 136);
   color: black;
+}
+
+
+.card-front-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: clamp(12px, 4vw, 32px);
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-face.front {
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: clamp(16px, 4vw, 24px);
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 2vw, 12px);
+  min-height: 0; 
+}
+
+
+.left img {
+  width: clamp(80px, 22vw, 140px);
+  max-height: 35%;
+  object-fit: contain;
+}
+
+
+.info {
+  font-size: clamp(12px, 2.8vw, 16px);
+}
+
+
+  .fav {
+  font-size: clamp(11px, 2.5vw, 14px);
+  margin-top: auto;
+  line-height: 1.3;
+
+  max-height: 30%;
+  overflow: hidden;
+}
+
+
+@media (max-width: 480px) {
+  .card-front-layout {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fav {
+    margin-top: 16px;
+  }
+  .scene {
+    min-height: 70vh;   
+  }
+
+  .card {
+    width: 95vw;
+  }
+
+  .card-face.front {
+    padding: 14px;
+  }
 }
