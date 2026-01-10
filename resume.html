@@ -11,23 +11,23 @@
 
 <body>
   <div class="lang-dropdown">
-  <button type="button" onclick="toggleLang()" class="lang-btn">
-    <img src="src/globe-icon-white-8.jpg" alt="lang" width="40">
-  </button>
+    <button type="button" onclick="toggleLang()" class="lang-btn">
+      <img src="src/globe-icon-white-8.jpg" alt="lang" width="40">
+    </button>
 
-  <ul id="langMenu" class="lang-menu">
-    <li>
-      <a href="#" class="en">
-        <img src="https://flagsapi.com/US/flat/32.png" alt="English">
-      </a>
-    </li>
-    <li>
-      <a href="resume-th.html" class="th">
-        <img src="https://flagsapi.com/TH/flat/32.png" alt="Thai">
-      </a>
-    </li>
-  </ul>
-</div>
+    <ul id="langMenu" class="lang-menu">
+      <li>
+        <a href="#" class="en">
+          <img src="https://flagsapi.com/US/flat/32.png" alt="English">
+        </a>
+      </li>
+      <li>
+        <a href="resume-th.html" class="th">
+          <img src="https://flagsapi.com/TH/flat/32.png" alt="Thai">
+        </a>
+      </li>
+    </ul>
+  </div>
 
 
 
@@ -38,28 +38,32 @@
 
       <!-- FRONT -->
       <div class="card-face front">
-  <div class="card-front-layout">
+        <div class="card-front-layout">
 
-    <div class="left">
-      <h1>IT IDENTIFICATION CARD</h1>
-      <img src="src/me.png" alt="me">
-      <div class="fav">
-        <p><b>Likes</b></p>
-        <p>Black Cat</p>
-        <p>Gaming</p>
-        <p>Coding</p>
+          <div class="left">
+            <h1>IT IDENTIFICATION CARD</h1>
+            <img src="src/me.png" alt="me">
+            <div class="fav">
+              <p><b>Likes</b></p>
+              <p>Black Cat</p>
+              <p>Gaming</p>
+              <p>Coding</p>
+            </div>
+          </div>
+
+          <div class="right info">
+            <p>Treerawat Tanlahakit</p>
+            <p>Age : 22</p>
+            <p>Gender : Male</p>
+            <p>IT Student</p>
+            <div class="int">
+              <p><b>Interested In</b></p>
+              <p>Web Development</p>
+              <p>UI & Interaction</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="right info">
-      <p>Treerawat Tanlahakit</p>
-      <p>Age : 22</p>
-      <p>Gender : Male</p>
-      <p>IT Student</p>
-    </div>
-
-  </div>
-</div>
 
 
       <!-- BACK -->
@@ -68,7 +72,6 @@
         <p>Web Development</p>
         <p>UI & Interaction</p>
       </div>
-
     </div>
   </section>
 
@@ -109,10 +112,36 @@
     <h2>Contact</h2>
     <p>Email: <span id="email"><a href="mailto:treerawat.t@nsru.ac.th">treerawat.t@nsru.ac.th</a></span></p>
     <a href="https://github.com/FRANC1S-png"><img src="/src/github.png" alt="github" width="130px"></a>
-    <a href="https://www.linkedin.com/in/treerawat-tanlahakit-12b85438b/"><img src="/src/linkedin.png" alt="linkedin" width="130px"></a>
+    <a href="https://www.linkedin.com/in/treerawat-tanlahakit-12b85438b/"><img src="/src/linkedin.png" alt="linkedin"
+        width="130px"></a>
     <a href="/resume/MyResume.pdf" download="resumeTreerawat">
       <button class="download-btn">Download My Resume</button>
     </a>
+  </section>
+
+  <!-- FOLDER -->
+
+  <section>
+    <!-- Folder -->
+    <div class="folder" id="folder1">
+      <img src="src/me.png" alt="folder">
+      <span>New Folder</span>
+    </div>
+
+    <!-- Window -->
+    <div class="window" id="folderWindow">
+      <div class="window-header" id="folderHeader">
+        <span>New Folder</span>
+        <button id="closeWin">✕</button>
+      </div>
+
+      <div class="window-content">
+        <p><embed src="cer/AI cer.pdf" width="300px" height="500px">📄 Project 1</p>
+        <p><embed src="cer/big data cer.pdf" width="300px" height="500px">📄 Project 2</p>
+        <p><embed src="cer/IoT cer.pdf" width="300px" height="500px">📁 Sub Folder</p>
+      </div>
+    </div>
+
   </section>
 
   <script src="js/script2.js"></script>

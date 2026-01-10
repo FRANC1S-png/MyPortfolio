@@ -15,6 +15,42 @@ let currentScrollRotate = 0;
 
 const MAX_ROTATE_X = 70;
 
+const folder = document.getElementById("folder1");
+const windowBox = document.getElementById("folderWindow");
+const closeBtn = document.getElementById("closeWin");
+
+
+const chatWindow = document.getElementById('folderWindow');
+const chatHeader = document.getElementById('folderHeader');
+let offsetX = 0, offsetY = 0, IsDragging = false; 
+
+// -----------------------------
+// Dragging System
+// -----------------------------
+folderHeader.addEventListener("mousedown", (e) => {
+    IsDragging = true;
+
+    // แปลง transform ตำแหน่งจริงเมื่อเริ่มลาก
+    const rect = folderWindow.getBoundingClientRect();
+    folderWindow.style.transform = "none";
+    folderWindow.style.left = rect.left + "px";
+    folderWindow.style.top = rect.top + "px";
+
+    offsetX = e.clientX - folderWindow.offsetLeft;
+    offsetY = e.clientY - folderWindow.offsetTop;
+});
+
+document.addEventListener("mousemove", (e) => {
+    if (!IsDragging) return;
+
+    folderWindow.style.left = (e.clientX - offsetX) + "px";
+    folderWindow.style.top = (e.clientY - offsetY) + "px";
+});
+
+document.addEventListener("mouseup", () => {
+    IsDragging = false;
+});
+
 /* =========================
    UPDATE TRANSFORM
 ========================= */
@@ -135,3 +171,13 @@ document.addEventListener("click", (e) => {
   }
 });
 
+
+// double click เปิด
+folder.addEventListener("dblclick", () => {
+  windowBox.style.display = "block";
+});
+
+// ปิด window
+closeBtn.addEventListener("click", () => {
+  windowBox.style.display = "none";
+});
