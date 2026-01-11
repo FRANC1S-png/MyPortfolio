@@ -41,7 +41,6 @@ body {
   width: min(90vw, 600px);
   aspect-ratio: 600 / 350;
   height: auto;
-
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.1s linear;
@@ -56,7 +55,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: white;
+  background: whitesmoke;
   color: black;
 }
 
@@ -66,6 +65,14 @@ body {
   color: black;
   transform: rotateY(180deg);
   background: whitesmoke;
+  text-align: center;
+}
+
+.line {
+  width: 100%;
+  height: 50px;
+  background: black;
+  margin-bottom: 12px;
 }
 
 /* ========== ABOUT ========== */
@@ -102,7 +109,6 @@ body {
   padding: 20px;
   border: 1px solid #444;
   transition: transform 0.3s;
-
 }
 
 #learn-card {
@@ -110,7 +116,6 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 20px;
-
 }
 
 .learn-card:hover {
@@ -190,6 +195,7 @@ body {
 .fav {
   position: absolute;
   top: 220px;
+  left: 40px;
   padding-top: 20px;
 }
 
@@ -203,14 +209,16 @@ body {
   padding: 0;
 }
 
+
+
 .download-btn {
-  font-family: monospace;
+  font-family: 'minecraft', monospace;
   padding: 20px;
   font-size: 16px;
   color: black;
   background-color: white;
-  border: none;
-  border-radius: 2px;
+  border: 4px solid black;
+  border-radius: 4px;
   cursor: pointer;
   margin: 20px;
   align-items: center;
@@ -219,7 +227,7 @@ body {
 }
 
 .download-btn:hover {
-  border: 1px solid rgb(136, 136, 136);
+  background-color: #eee;
   color: black;
 }
 
@@ -271,7 +279,6 @@ body {
   flex: 1;
   min-height: 0;
   margin-top: 60px;
-  padding: 0%;
 }
 
 .right {
@@ -285,6 +292,28 @@ margin-left: 0;
   line-height: 1.3;
   max-height: 30%;
   overflow: hidden;
+}
+
+.github {
+  background-color: white;
+  border-radius: 100%;
+  border-width: 1px;
+}
+
+/* ========== FOLDER ICON ========== */
+
+.folder-con {
+  padding: 40px 10%;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.folder-con h2 {
+  width: 100%;
+  color: white;
+  font-family: monospace;
+  margin-bottom: 20px;
 }
 
 /* Folder icon */
@@ -305,11 +334,71 @@ margin-left: 0;
 }
 
 .folder:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s;
+  border: 2px double white;
+  /* transform: scale(1.1); */
+  /* transition: transform 0.2s; */
 }
 
-/* Window */
+/* ---------- FOLDER 2 ========== */
+
+.folder2 {
+  width: 80px;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}
+
+.folder2 img {
+  width: 64px;
+}
+
+.folder2 span {
+  font-size: 14px;
+  color: white;
+}
+
+.folder2:hover {
+  border: 2px double white;
+  /* transform: scale(1.1); */
+  /* transition: transform 0.2s; */
+}
+
+/* ---------- FOLDER 3 ========== */
+
+.folder3 {
+  width: 80px;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}
+
+.folder3 img {
+  width: 64px;
+}
+
+.folder3 span {
+  font-size: 14px;
+  color: white;
+}
+
+.folder3:hover {
+  border: 2px double white;
+  /* transform: scale(1.1); */
+  /* transition: transform 0.2s; */
+}
+
+#closeWin{
+    font-family: 'minecraft', monospace;
+    font-style: bold;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    float: right;
+}
+
+/* -------- Window ---------- */
 .window {
   font-family: 'minecraft', monospace;
   position: fixed;
@@ -345,8 +434,19 @@ margin-left: 0;
   overflow-y: auto; 
   padding: 15px;
   color: black;
-  border: 5px solid black;
+  border: 7px solid black;
   height: calc(100% - 40px);
+}
+
+.window-content p {
+  width: 400px;
+  margin: 10px 0;
+  font-size: 24px;
+}
+
+.window-content img {
+  width: 300%;
+  height: auto;
 }
 
 .window-content::-webkit-scrollbar {
@@ -363,6 +463,153 @@ margin-left: 0;
   background: transparent;
 }
 
+/* -------- Window  2 ---------- */
+#closeWin2{
+    font-family: 'minecraft', monospace;
+    font-style: bold;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    float: right;
+}
+
+.window2 {
+  font-family: 'minecraft', monospace;
+  position: fixed;
+  top: 100px;
+  left: 150px;
+  width: 90%;
+  height: 90%;
+  background: white;
+  border: 5px solid white;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  display: none;
+  overflow: hidden;
+  flex-direction: column;
+  animation: openWin .25s ease-out;
+}
+
+/* Header */
+.window-header2 {
+  height: 40px;
+  background: black;
+  border-radius: 5px 5px 0 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: grab;
+  position: relative;
+}
+
+.window-content2 {
+  flex: 1;              /* กินพื้นที่ที่เหลือ */
+  overflow-y: auto; 
+  padding: 15px;
+  color: black;
+  border: 7px solid black;
+  height: calc(100% - 40px);
+}
+
+.window-content2 p {
+  width: 300px;
+  margin: 10px 0;
+  font-size: 24px;
+}
+
+.window-content2 img {
+  width: 400%;
+  height: auto;
+}
+
+.window-content2::-webkit-scrollbar {
+  width: 10px;
+  background-color: #222;
+}
+
+.window-content2::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 2px;
+}
+
+.window-content2::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* -------- Window  3 ---------- */
+#closeWin3{
+    font-family: 'minecraft', monospace;
+    font-style: bold;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    float: right;
+}
+
+
+.window3 {
+  font-family: 'minecraft', monospace;
+  position: fixed;
+  top: 100px;
+  left: 150px;
+  width: 30%;
+  height: 20%;
+  background: white;
+  border: 5px solid white;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  display: none;
+  overflow: hidden;
+  flex-direction: column;
+  animation: openWin .25s ease-out;
+}
+
+/* Header */
+.window-header3 {
+  height: 40px;
+  background: black;
+  border-radius: 5px 5px 0 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: grab;
+  position: relative;
+}
+
+.window-content3 {
+  flex: 1;              /* กินพื้นที่ที่เหลือ */
+  overflow-y: auto; 
+  padding: 15px;
+  color: black;
+  border: 7px solid black;
+  height: calc(100% - 40px);
+}
+
+.window-content3 p {
+  width: 50%;
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.window-content3::-webkit-scrollbar {
+  width: 10px;
+  background-color: #222;
+}
+
+.window-content3::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 2px;
+}
+
+.window-content3::-webkit-scrollbar-track {
+  background: transparent;
+}
 
 @keyframes openWin {
   from {

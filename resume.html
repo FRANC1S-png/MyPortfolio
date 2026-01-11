@@ -41,7 +41,7 @@
         <div class="card-front-layout">
 
           <div class="left">
-            <h1>IT IDENTIFICATION CARD</h1>
+            <h1>IDENTIFICATION CARD</h1>
             <img src="src/me.png" alt="me">
             <div class="fav">
               <p><b>Likes</b></p>
@@ -56,6 +56,7 @@
             <p>Age : 22</p>
             <p>Gender : Male</p>
             <p>IT Student</p>
+            <p>-----------------------</p>
             <div class="int">
               <p><b>Interested In</b></p>
               <p>Web Development</p>
@@ -68,9 +69,10 @@
 
       <!-- BACK -->
       <div class="card-face back">
-        <h2>Interested In</h2>
-        <p>Web Development</p>
-        <p>UI & Interaction</p>
+        <div class="line"></div>
+        <h2>IDENTIFICATION CARD</h2>
+        <p>ID : 67113742001</p>
+        <p>I want to be DEV.</p>
       </div>
     </div>
   </section>
@@ -107,42 +109,87 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section class="contact">
-    <h2>Contact</h2>
-    <p>Email: <span id="email"><a href="mailto:treerawat.t@nsru.ac.th">treerawat.t@nsru.ac.th</a></span></p>
-    <a href="https://github.com/FRANC1S-png"><img src="/src/github.png" alt="github" width="130px"></a>
-    <a href="https://www.linkedin.com/in/treerawat-tanlahakit-12b85438b/"><img src="/src/linkedin.png" alt="linkedin"
-        width="130px"></a>
-    <a href="/resume/MyResume.pdf" download="resumeTreerawat">
-      <button class="download-btn">Download My Resume</button>
-    </a>
-  </section>
-
   <!-- FOLDER -->
 
-  <section>
+  <section class="folder-con">
+    <h2>Certificates & Resume</h2>
     <!-- Folder -->
-    <div class="folder" id="folder1">
-      <img src="src/me.png" alt="folder">
-      <span>New Folder</span>
+    <div class="folder" id="folder" data-name="Certificates">
+      <img src="src/folder.png" alt="folder">
+      <span>Certificates</span>
+    </div>
+
+    <div class="folder2" id="folder2" data-name="NSRU">
+      <img src="src/folder.png" alt="folder">
+      <span>NSRU</span>
+    </div>
+
+    <div class="folder3" id="folder3" data-name="Resume">
+      <img src="src/folder.png" alt="folder">
+      <span>Resume</span>
     </div>
 
     <!-- Window -->
     <div class="window" id="folderWindow">
       <div class="window-header" id="folderHeader">
-        <span>New Folder</span>
-        <button id="closeWin">✕</button>
+        <span>Certificates</span>
+        <button id="closeWin">X</button>
       </div>
 
       <div class="window-content">
-        <p><embed src="cer/AI cer.pdf" width="300px" height="500px">📄 Project 1</p>
-        <p><embed src="cer/big data cer.pdf" width="300px" height="500px">📄 Project 2</p>
-        <p><embed src="cer/IoT cer.pdf" width="300px" height="500px">📁 Sub Folder</p>
+        <p><img src="cer/AI cer.png" alt="AI cer"></p>
+        <p><img src="cer/big data cer.png" alt="Big data cer"></p>
+        <p><img src="cer/IoT cer.png" alt="IoT cer"></p>
+        <p><img src="cer/network cer.png" alt="Network cer"></p>
+        <p><img src="cer/UX cer.png" alt="UX cer"></p>
       </div>
     </div>
 
+
+    <!-- Window 2 -->
+    <div class="window2" id="folderWindow2">
+      <div class="window-header2" id="folderHeader2">
+        <span>NSRU</span>
+        <button id="closeWin2">X</button>
+      </div>
+
+      <div class="window-content2">
+        <p><img src="cer/NSRU-1.png" alt="NSRU cer"></p>
+        <p><img src="cer/CWIE.jpg" alt="CWIE"></p>
+      </div>
+    </div>
+
+
+    <!-- Window 3 -->
+    <div class="window3" id="folderWindow3">
+      <div class="window-header3" id="folderHeader3">
+        <span>Certificates</span>
+        <button id="closeWin3">X</button>
+      </div>
+
+      <div class="window-content3">
+        <p>Resume</p>
+        <a href="/resume/MyResume.pdf" download="resumeTreerawat">
+          <button class="download-btn">Download My Resume</button>
+        </a>
+      </div>
+    </div>
+
+   
+
   </section>
+
+  <!-- CONTACT -->
+  <section class="contact">
+    <h2>Contact</h2>
+    <a href="mailto:treerawat.t@nsru.ac.th"><img src="src/gmail.png" alt="gmail" width="130px"
+        class="gmail"></a>
+    <a href="https://github.com/FRANC1S-png"><img src="/src/github.png" alt="github" width="130px" class="github"></a>
+    <a href="https://www.linkedin.com/in/treerawat-tanlahakit-12b85438b/"><img src="/src/linkedin.png" alt="linkedin"
+        width="130px"></a>
+  </section>
+
+  
 
   <script src="js/script2.js"></script>
 </body>
