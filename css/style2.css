@@ -21,6 +21,7 @@ body {
   font-family: monospace;
   background: #0b0b0b;
   color: #fff; 
+  overflow-x: hidden;
 }
 
 /* ========== CARD ========== */
@@ -444,10 +445,13 @@ margin-left: 0;
   font-size: 24px;
 }
 
-.window-content img {
-  width: 300%;
+.window-content img,
+.window-content2 img {
+  max-width: 100%;
   height: auto;
+  display: block;
 }
+
 
 .window-content::-webkit-scrollbar {
   width: 10px;
@@ -518,11 +522,6 @@ margin-left: 0;
   width: 300px;
   margin: 10px 0;
   font-size: 24px;
-}
-
-.window-content2 img {
-  width: 400%;
-  height: auto;
 }
 
 .window-content2::-webkit-scrollbar {
@@ -623,34 +622,87 @@ margin-left: 0;
 }
 
 /* ========== RESPONSIVE ====== */
- 
 @media (max-width: 480px) {
+
   .card-front-layout {
-    flex-direction: column;
-    align-items: center;
+    gap: 12px;
+  }
+
+ .left {
+    width: 45%;
+  }
+
+  .left h1 {
+    font-size: 14px;
+    text-align: center;
   }
 
   .left img {
-    max-height: none;
-  }
-
-  .right.info {
-    margin-top: 16px;
-    margin-left: 150px;
+    width: 90px;
+    height: auto;
   }
 
   .fav {
-    margin-top: 16px;
-  }
-  .scene {
-    min-height: 70vh;   
+    position: static;
+    width: 100%;
   }
 
-  .card {
+  .right.info {
+    width: 100%;
+    margin: 0;
+    margin-top: 2%;
+    font-size: 10px;
+  }
+
+  .info {
+    font-size: 8px;
+  }
+
+  .fav,
+  .int {
+    font-size: 8px;
+  }
+
+  img {
+    width: 50px;
+    height: auto;
+  } 
+
+  .learning {
+    width: 100%;
+  }
+
+
+  .window,
+  .window2 {
     width: 95vw;
+    height: 85vh;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  .card-face.front {
-    padding: 14px;
+  .window3 {
+    width: 90vw;
+    height: auto;
+    max-height: 60vh;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
+
+   .window-content,
+  .window-content2,
+  .window-content3 {
+    padding: 10px;
+  }
+
+  .window-content p,
+  .window-content2 p {
+    width: 100%;
+    font-size: 16px;
+  }
+
 }

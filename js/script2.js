@@ -13,6 +13,9 @@ let rotateY = 0;
 let targetScrollRotate = 0;
 let currentScrollRotate = 0;
 
+let lastTouchTime = 0;
+
+
 const MAX_ROTATE_X = 70;
 
 
@@ -225,7 +228,9 @@ animate();
 card.style.cursor = "grab";
 updateCardTransform();
 
-
+/*==================
+  LANG BUTTON
+====================*/  
 function toggleLang() {
   const menu = document.getElementById("langMenu");
   menu.style.display =
@@ -242,6 +247,10 @@ document.addEventListener("click", (e) => {
   }
 });
 
+/*===========================
+  Open folder DOUBLE
+==============================*/
+
 
 // double click เปิด
 folder.addEventListener("dblclick", () => {
@@ -252,6 +261,17 @@ folder.addEventListener("dblclick", () => {
 closeBtn.addEventListener("click", () => {
   windowBox.style.display = "none";
 });
+
+folder.addEventListener("touchend", () => {
+  const now = Date.now();
+
+  if (now - lastTouchTime < 350) {
+    windowBox.style.display = "block"; // double tap
+  }
+
+  lastTouchTime = now;
+});
+
 
 
 //-------------Window 2-----------------
@@ -265,6 +285,17 @@ closeBtn2.addEventListener("click", () => {
   windowBox2.style.display = "none";
 });
 
+folder2.addEventListener("touchend", () => {
+  const now = Date.now();
+
+  if (now - lastTouchTime < 350) {
+    windowBox2.style.display = "block"; // double tap
+  }
+
+  lastTouchTime = now;
+});
+
+
 //-------------Window 3-----------------
 // double click เปิด
 folder3.addEventListener("dblclick", () => {
@@ -275,3 +306,14 @@ folder3.addEventListener("dblclick", () => {
 closeBtn3.addEventListener("click", () => {
   windowBox3.style.display = "none";
 });
+
+folder3.addEventListener("touchend", () => {
+  const now = Date.now();
+
+  if (now - lastTouchTime < 350) {
+    windowBox3.style.display = "block"; // double tap
+  }
+
+  lastTouchTime = now;
+});
+
