@@ -610,6 +610,21 @@ margin-left: 0;
   background: transparent;
 }
 
+.window,
+.window2,
+.window3 {
+  touch-action: none; /* กัน scroll ตอนลาก */
+  min-width: 220px;
+  min-height: 160px;
+}
+
+.window-header,
+.window-header2,
+.window-header3 {
+  user-select: none;
+}
+
+
 @keyframes openWin {
   from {
     transform: scale(0.9);

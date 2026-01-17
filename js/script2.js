@@ -173,6 +173,8 @@ function endDrag() {
   card.style.cursor = "grab";
 }
 
+
+
 /* =========================
    MOUSE EVENTS
 ========================= */
@@ -317,3 +319,108 @@ folder3.addEventListener("touchend", () => {
   lastTouchTime = now;
 });
 
+// =============================
+// 📱 TOUCH DRAG FOR WINDOWS
+// =============================
+function enableTouchDrag(windowEl, headerEl) {
+  let startX, startY, offsetX, offsetY, dragging = false;
+
+  headerEl.addEventListener("touchstart", e => {
+    const t = e.touches[0];
+    dragging = true;
+
+    const rect = windowEl.getBoundingClientRect();
+    windowEl.style.transform = "none";
+    windowEl.style.left = rect.left + "px";
+    windowEl.style.top = rect.top + "px";
+
+    offsetX = t.clientX - windowEl.offsetLeft;
+    offsetY = t.clientY - windowEl.offsetTop;
+  }, { passive: true });
+
+  document.addEventListener("touchmove", e => {
+    if (!dragging) return;
+    const t = e.touches[0];
+    windowEl.style.left = (t.clientX - offsetX) + "px";
+    windowEl.style.top = (t.clientY - offsetY) + "px";
+  }, { passive: true });
+
+  document.addEventListener("touchend", () => {
+    dragging = false;
+  });
+}
+
+// ✅ เปิดใช้กับทุก window
+enableTouchDrag(folderWindow, folderHeader);
+enableTouchDrag(folderWindow2, folderHeader2);
+enableTouchDrag(folderWindow3, folderHeader3);
+
+// =============================
+// 🖱️ RESIZE FROM EDGES (DESKTOP)
+// =============================
+function enableResize(win) {
+  let isResizing = false;
+  let dir = "";
+  let startX, startY, startW, startH, startLeft, startTop;
+
+  const EDGE = 8;
+
+  win.addEventListener("mousemove", e => {
+    if (isResizing) return;
+
+    const r = win.getBoundingClientRect();
+    const left = e.clientX - r.left < EDGE;
+    const right = r.right - e.clientX < EDGE;
+    const top = e.clientY - r.top < EDGE;
+    const bottom = r.bottom - e.clientY < EDGE;
+
+    win.style.cursor =
+      (left && top) || (right && bottom) ? "nwse-resize" :
+      (right && top) || (left && bottom) ? "nesw-resize" :
+      left || right ? "ew-resize" :
+      top || bottom ? "ns-resize" :
+      "default";
+
+    dir = { left, right, top, bottom };
+  });
+
+  win.addEventListener("mousedown", e => {
+    if (!dir.left && !dir.right && !dir.top && !dir.bottom) return;
+
+    isResizing = true;
+    const r = win.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    startW = r.width;
+    startH = r.height;
+    startLeft = r.left;
+    startTop = r.top;
+    e.preventDefault();
+  });
+
+  document.addEventListener("mousemove", e => {
+    if (!isResizing) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    if (dir.right) win.style.width = startW + dx + "px";
+    if (dir.bottom) win.style.height = startH + dy + "px";
+    if (dir.left) {
+      win.style.width = startW - dx + "px";
+      win.style.left = startLeft + dx + "px";
+    }
+    if (dir.top) {
+      win.style.height = startH - dy + "px";
+      win.style.top = startTop + dy + "px";
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    isResizing = false;
+  });
+}
+
+// ✅ เปิดใช้กับทุก window
+enableResize(folderWindow);
+enableResize(folderWindow2);
+enableResize(folderWindow3);
