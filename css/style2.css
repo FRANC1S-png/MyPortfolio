@@ -7,6 +7,12 @@
   src: url('../fonts/Minecraft.ttf') format('truetype'); 
 }
 
+.prompt-regular {
+  font-family: "Prompt", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 code {
   font-family: 'minecraft', monospace;
 }
@@ -18,10 +24,11 @@ a {
 
 body {
   margin: 0;
-  font-family: monospace;
+  font-family: monospace , 'Prompt', sans-serif;
   background: #0b0b0b;
   color: #fff; 
   overflow-x: hidden;
+
 }
 
 /* ========== CARD ========== */
@@ -279,7 +286,7 @@ body {
 .right.info {
   flex: 1;
   min-height: 0;
-  margin-top: 60px;
+  margin-top: 10%;
 }
 
 .right {
