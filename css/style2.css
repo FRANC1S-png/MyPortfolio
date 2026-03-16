@@ -168,7 +168,7 @@ body {
 .about, .learning, .folder-con, .contact {
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     will-change: opacity, transform;
-}
+}a
 
 /* ส่วนข้อความพิเศษล่างสุด */
 .footer-warning {
