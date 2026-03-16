@@ -116,18 +116,6 @@ body {
   min-height: 100vh;
   margin-top: 50vh;
 
-  /* ค่าเริ่มต้น */
-  opacity: 1;
-  transform: scale(1);
-  
-  /* ตัวคุมความสมูท */
-  transition: opacity 0.1s linear, transform 0.1s linear;
-  will-change: opacity, transform;
-
-  /* ใส่การจางหายที่นี่ */
-  animation: fadeOutScroll linear forwards;
-  animation-timeline: scroll(root); /* อ้างอิงการเลื่อนของหน้าเว็บทั้งหมด */
-  animation-range: exit 0% exit 100%;
 }
 
 .about-text {
@@ -174,6 +162,25 @@ body {
   z-index: 15;
   padding: 80px 10%;
   position: space-between;
+}
+
+/* คลาสสำหรับทุก Section ที่ต้องการให้จางเมื่อเลื่อน */
+.about, .learning, .folder-con, .contact {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+}
+
+/* ส่วนข้อความพิเศษล่างสุด */
+.footer-warning {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'minecraft', monospace;
+    font-size: 2rem;
+    color: #ff4444;
+    opacity: 0;
+    transition: opacity 1s;
 }
 
 #card {

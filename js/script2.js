@@ -425,19 +425,40 @@ enableResize(folderWindow);
 enableResize(folderWindow2);
 enableResize(folderWindow3);
 
-window.addEventListener('scroll', () => {
-  const card = document.querySelector('.card', '.about');
-  const scrollPosition = window.scrollY;
-  const windowHeight = window.innerHeight;
+// --- อนิเมชั่นจางหายสำหรับทุก Section ---
+const sections = document.querySelectorAll('.about, .learning, .folder-con, .contact');
 
-  // คำนวณความจาง: ยิ่งเลื่อนลง Opacity ยิ่งลดลง
-  // 1 - (ระยะเลื่อน / ครึ่งหนึ่งของความสูงจอ)
-  let opacity = 1 - (scrollPosition / (windowHeight * 0.5));
-  
-  if (opacity >= 0) {
-    card.style.opacity = opacity;
-    card.style.transform = `scale(${0.8 + (opacity * 0.2)})`; // ค่อยๆ ย่อตัวลง
-  } else {
-    card.style.opacity = 0;
-  }
+window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY;
+    const windowHeight = window.innerHeight;
+
+    sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        const secTop = rect.top;
+        const secHeight = rect.height;
+
+        // คำนวณความจาง: เมื่อเริ่มเลื่อนออกจากหน้าจอ (Top ติดลบ) จะเริ่มจางลง
+        if (secTop < 0) {
+            let opacity = 1 - (Math.abs(secTop) / (secHeight * 0.8));
+            if (opacity < 0) opacity = 0;
+            
+            sec.style.opacity = opacity;
+            sec.style.transform = `scale(${0.95 + (opacity * 0.05)})`;
+        } else {
+            // ถ้ายังอยู่ในหน้าจอให้ชัดปกติ
+            sec.style.opacity = 1;
+            sec.style.transform = `scale(1)`;
+        }
+    });
+
+    // --- อนิเมชั่นสำหรับ "DONT OVERLAP ME" ---
+    const warningText = document.getElementById('warningText');
+    const footerRect = warningText.getBoundingClientRect();
+    
+    // ถ้าเลื่อนลงมาจนถึงล่างสุด ให้ข้อความค่อยๆ ปรากฏขึ้นมา
+    if (footerRect.top < windowHeight) {
+        warningText.style.opacity = 1;
+    } else {
+        warningText.style.opacity = 0;
+    }
 });
