@@ -28,7 +28,7 @@ body {
   background: #0b0b0b;
   color: #fff; 
   overflow-x: hidden;
-
+  height: 5000px;
 }
 
 /* ========== SCENE ========== */
@@ -107,15 +107,15 @@ body {
 }
 /* ========== ABOUT ========== */
 .about {
-  display: flex;
-  gap: 40px;
-  padding: 100px 10%;
-  align-items: center;
-  position: relative;
-  z-index: 10;
-  min-height: 100vh;
-  margin-top: 50vh;
-
+    display: flex;
+    gap: 40px;
+    padding: 100px 10%;
+    align-items: center;
+    position: relative;
+    z-index: 10;      /* อยู่เหนือการ์ด */
+    min-height: 100vh;
+    background: #0b0b0b; /* ใส่สีพื้นหลังให้ทึบเพื่อบังการ์ดข้างหลัง */
+    margin-top: 0;       /* เปลี่ยนจาก 50vh เป็น 0 หรือตามความเหมาะสม */
 }
 
 .about-text {

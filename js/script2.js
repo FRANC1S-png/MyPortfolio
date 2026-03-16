@@ -429,27 +429,39 @@ enableResize(folderWindow3);
 const sections = document.querySelectorAll('.about, .learning, .folder-con, .contact');
 
 window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY;
+    // เลือกการ์ดและเลเยอร์ที่คุมการจาง
+    const cardShifter = document.querySelector('.card-shifter');
+    const scene = document.querySelector('.scene');
+    const scrollPosition = window.scrollY;
     const windowHeight = window.innerHeight;
 
+    // คำนวณความจางของการ์ด (หายไปภายในระยะครึ่งหน้าจอแรก)
+    let cardOpacity = 1 - (scrollPosition / (windowHeight * 0.6));
+    
+    if (cardOpacity > 0) {
+        cardShifter.style.opacity = cardOpacity;
+        cardShifter.style.transform = `scale(${0.8 + (cardOpacity * 0.2)})`;
+        cardShifter.style.visibility = 'visible'; // แสดงการ์ดเมื่อยังจางไม่หมด
+        scene.style.pointerEvents = 'auto';      // ให้ยังกดหรือ hover การ์ดได้
+    } else {
+        cardShifter.style.opacity = 0;
+        cardShifter.style.visibility = 'hidden';  // หายไปเลย ไม่ขวางทาง
+        scene.style.pointerEvents = 'none';      // ปิดการรับเหตุการณ์เมาส์ ไม่ให้บังปุ่มข้างล่าง
+    }
+
+    // --- ส่วนของ Section อื่นๆ (About, Learning, etc.) ---
+    const sections = document.querySelectorAll('.about, .learning, .folder-con, .contact');
     sections.forEach(sec => {
         const rect = sec.getBoundingClientRect();
-        const secTop = rect.top;
-        const secHeight = rect.height;
-
-        // คำนวณความจาง: เมื่อเริ่มเลื่อนออกจากหน้าจอ (Top ติดลบ) จะเริ่มจางลง
-        if (secTop < 0) {
-            let opacity = 1 - (Math.abs(secTop) / (secHeight * 0.8));
-            if (opacity < 0) opacity = 0;
-            
-            sec.style.opacity = opacity;
-            sec.style.transform = `scale(${0.95 + (opacity * 0.05)})`;
+        // ถ้าเลื่อนขึ้นจนเกือบพ้นจอ (ขอบล่างของ Section อยู่ใกล้ขอบบนของจอ)
+        if (rect.top < 0) {
+            let secOpacity = 1 - (Math.abs(rect.top) / (rect.height * 0.8));
+            sec.style.opacity = secOpacity < 0 ? 0 : secOpacity;
         } else {
-            // ถ้ายังอยู่ในหน้าจอให้ชัดปกติ
             sec.style.opacity = 1;
-            sec.style.transform = `scale(1)`;
         }
     });
+
 
     // --- อนิเมชั่นสำหรับ "DONT OVERLAP ME" ---
     const warningText = document.getElementById('warningText');
