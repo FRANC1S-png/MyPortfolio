@@ -463,14 +463,10 @@ window.addEventListener('scroll', () => {
     });
 
 
-    // --- อนิเมชั่นสำหรับ "DONT OVERLAP ME" ---
-    const warningText = document.getElementById('warningText');
-    const footerRect = warningText.getBoundingClientRect();
-    
-    // ถ้าเลื่อนลงมาจนถึงล่างสุด ให้ข้อความค่อยๆ ปรากฏขึ้นมา
-    if (footerRect.top < windowHeight) {
-        warningText.style.opacity = 1;
-    } else {
-        warningText.style.opacity = 0;
-    }
+    // เช็คระยะล่างสุดของเว็บ
+if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+    document.getElementById('overlap-warning').style.opacity = 1;
+} else {
+    document.getElementById('overlap-warning').style.opacity = 0;
+}
 });

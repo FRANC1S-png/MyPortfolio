@@ -28,12 +28,11 @@ body {
   background: #0b0b0b;
   color: #fff; 
   overflow-x: hidden;
-  height: 5000px;
 }
 
 /* ========== SCENE ========== */
 .scene {
-  height: 100vh;
+  height: 150vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -113,9 +112,10 @@ body {
     align-items: center;
     position: relative;
     z-index: 10;      /* อยู่เหนือการ์ด */
-    min-height: 100vh;
+    min-height: 200vh;
     background: #0b0b0b; /* ใส่สีพื้นหลังให้ทึบเพื่อบังการ์ดข้างหลัง */
-    margin-top: 0;       /* เปลี่ยนจาก 50vh เป็น 0 หรือตามความเหมาะสม */
+    margin-top: 0;    
+    padding-bottom: 200px;   /* เปลี่ยนจาก 50vh เป็น 0 หรือตามความเหมาะสม */
 }
 
 .about-text {
@@ -131,6 +131,7 @@ body {
 .learning {
   z-index: 11;
   padding: 80px 10%;
+  margin-bottom: 500px;
 }
 
 .learning-cards {
