@@ -8,7 +8,7 @@
 }
 
 .prompt-regular {
-  font-family: "Prompt", sans-serif;
+  font-family: monospace, sans-serif;
   font-weight: 400;
   font-style: normal;
 }
@@ -90,7 +90,7 @@ body {
 .line {
   width: 100%;
   height: 50px;
-  background: black;
+  background: rgb(63, 61, 61);
   padding-top: 50px;
 }
 
@@ -115,6 +115,14 @@ body {
   z-index: 10;
   min-height: 100vh;
   margin-top: 50vh;
+
+  /* ค่าเริ่มต้น */
+  opacity: 1;
+  transform: scale(1);
+  
+  /* ตัวคุมความสมูท */
+  transition: opacity 0.1s linear, transform 0.1s linear;
+  will-change: opacity, transform;
 }
 
 .about-text {
@@ -157,6 +165,7 @@ body {
 
 /* ========== CONTACT ========== */
 .contact {
+  z-index: 15;
   padding: 80px 10%;
   position: space-between;
 }
