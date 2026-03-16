@@ -112,10 +112,10 @@ body {
     align-items: center;
     position: relative;
     z-index: 10;      /* อยู่เหนือการ์ด */
-    min-height: 200vh;
+    min-height: 150vh;
     background: #0b0b0b; /* ใส่สีพื้นหลังให้ทึบเพื่อบังการ์ดข้างหลัง */
     margin-top: 0;    
-    padding-bottom: 200px;   /* เปลี่ยนจาก 50vh เป็น 0 หรือตามความเหมาะสม */
+    padding-bottom: 100px;   /* เปลี่ยนจาก 50vh เป็น 0 หรือตามความเหมาะสม */
 }
 
 .about-text {
