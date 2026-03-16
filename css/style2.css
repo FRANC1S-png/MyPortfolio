@@ -33,32 +33,28 @@ body {
 
 /* ========== CARD ========== */
 .scene {
-  height: 100vh;
+  min-height: 60vh;
   display: flex;
   justify-content: center;
+  /* align-items: flex-start; */
   align-items: center;
-  position: sticky; /* ล็อคการ์ดให้อยู่กลางจอขณะ scroll */
-  top: 0;
-  z-index: 1;
+  padding: 0;
   perspective: 1200px;
 }
 
 .card {
+  /* margin: 60px;
+  width: 600px;
+  height: 350px; */
   width: min(90vw, 600px);
-  max-width: 500px;
   aspect-ratio: 600 / 350;
+  height: auto;
   position: relative;
   transform-style: preserve-3d;
-  
-  /* เชื่อมต่อกับ Scroll Timeline */
-  animation: fadeAndScale linear forwards;
-  animation-timeline: scroll();
-  animation-range: exit 0% exit 100%; 
+  transition: transform 0.1s linear;
 }
 
-
-
-.card-face {
+.card-face{
   position: absolute;
   inset: 0;
   padding: 20px;
@@ -69,9 +65,7 @@ body {
   justify-content: center;
   background: whitesmoke;
   color: black;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2); /* เพิ่มมิติให้การ์ด */
 }
-
 
 
 
@@ -89,26 +83,13 @@ body {
   margin-bottom: 12px;
 }
 
-@keyframes fadeAndScale {
-  from {
-    opacity: 1;
-    transform: scale(1); /* หรือใส่ค่า rotateY(0deg) ถ้าเดิมคุณมีหมุนไว้ */
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.5) translateZ(-200px); /* ย่อลงและดันไปข้างหลังในมิติ 3D */
-  }
-}
-
 /* ========== ABOUT ========== */
 .about {
   display: flex;
   gap: 40px;
   padding: 100px 10%;
   align-items: center;
-  position: relative;
-  z-index: 2;
-  min-height: 100vh;
+  
 }
 
 .about-text {
