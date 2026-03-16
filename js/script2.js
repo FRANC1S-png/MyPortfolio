@@ -515,7 +515,7 @@ window.addEventListener('wheel', (e) => {
                 canShowWarning = true;
                 isWaiting = false;
                 console.log("Ready to show after 2-3 more scrolls");
-            }, 2000); 
+            }, 1000); 
         }
 
         // --- ขั้นตอนที่ 2: หลังจาก 2 วิแล้ว ต้องไถอีก 3 ครั้ง ---
