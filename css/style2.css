@@ -101,7 +101,9 @@ body {
   gap: 40px;
   padding: 100px 10%;
   align-items: center;
-  
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
 }
 
 .about-text {
