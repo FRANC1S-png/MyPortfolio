@@ -181,6 +181,11 @@ body {
     transition: opacity 1s;
 }
 
+#overlap-warning {
+    transition: opacity 0.4s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* ตัว cubic-bezier จะทำให้ตอนเด้งขึ้นมาดูมีแรงกระแทกมากขึ้น */
+}
+
 #card {
   user-select: none;
   touch-action: none; /* 🚫 ปิด pinch/scroll ตอนลาก */

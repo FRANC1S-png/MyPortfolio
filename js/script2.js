@@ -495,38 +495,55 @@ window.addEventListener('scroll', () => {
     });
 
 
-   let scrollAttempts = 0;
-const REQUIRED_ATTEMPTS = 3; // จำนวนครั้งที่ต้องไถเพิ่ม (2-3 ครั้ง)
-let isWarningShown = false;
+let scrollAttempts = 0;
+let canShowWarning = false;
+let isWaiting = false;
+let waitTimeout;
 
 window.addEventListener('wheel', (e) => {
-    // เช็คว่าเลื่อนลงสุดจอหรือยัง
-    const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10;
+    const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 15;
     const warning = document.getElementById('overlap-warning');
 
     if (isAtBottom && e.deltaY > 0) {
-        // ถ้าอยู่ล่างสุดแล้วยังพยายามเลื่อนลง (deltaY > 0)
-        scrollAttempts++;
+        // --- ขั้นตอนที่ 1: ชนกำแพงแล้วต้องรอ 2 วิ ---
+        if (!isWaiting && !canShowWarning) {
+            isWaiting = true;
+            console.log("Collision! Wait 2 seconds...");
+            
+            // เริ่มนับถอยหลัง 2 วินาที
+            waitTimeout = setTimeout(() => {
+                canShowWarning = true;
+                isWaiting = false;
+                console.log("Ready to show after 2-3 more scrolls");
+            }, 2000); 
+        }
 
-        if (scrollAttempts >= REQUIRED_ATTEMPTS) {
-            // แสดงข้อความ
-            warning.style.opacity = 1;
-            warning.style.transform = 'translateY(-20px) scale(1.1)';
-            isWarningShown = true;
-        } else {
-            // อนิเมชั่นสั่นเล็กน้อยตอนชน (ฟีลลิ่งชนกำแพง)
-            warning.style.opacity = 0.3;
-            warning.style.transform = `translateY(${-scrollAttempts * 10}px)`;
+        // --- ขั้นตอนที่ 2: หลังจาก 2 วิแล้ว ต้องไถอีก 3 ครั้ง ---
+        if (canShowWarning) {
+            scrollAttempts++;
+            
+            // เอฟเฟกต์การไถแต่ละครั้ง (ค่อยๆ ชัดขึ้น)
+            warning.style.opacity = (scrollAttempts / 3) * 0.5;
+            warning.style.transform = `translateY(${-scrollAttempts * 15}px)`;
+
+            if (scrollAttempts >= 3) {
+                warning.style.opacity = 1;
+                warning.style.transform = 'translateY(-30px) scale(1.2)';
+                warning.style.color = '#ff0000';
+                warning.style.textShadow = '0 0 10px rgba(255,0,0,0.8)';
+            }
         }
     } else if (e.deltaY < 0) {
-        // ถ้าเลื่อนขึ้น ให้รีเซ็ตค่า
+        // --- รีเซ็ตทุกอย่างเมื่อเลื่อนขึ้น ---
+        clearTimeout(waitTimeout);
         scrollAttempts = 0;
+        canShowWarning = false;
+        isWaiting = false;
+        
         warning.style.opacity = 0;
         warning.style.transform = 'translateY(20px) scale(1)';
-        isWarningShown = false;
     }
 }, { passive: false });
-
 // สำหรับมือถือ (Touch)
 let touchStartY = 0;
 window.addEventListener('touchstart', e => {
