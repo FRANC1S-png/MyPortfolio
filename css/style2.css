@@ -31,70 +31,65 @@ body {
 
 }
 
-/* ========== CARD ========== */
+/* ========== SCENE ========== */
 .scene {
-  min-height: 60vh;
   height: 100vh;
   display: flex;
   justify-content: center;
-  /* align-items: flex-start; */
   align-items: center;
-  position: sticky;
-  padding: 0;
-  perspective: 1200px;
+  position: sticky; /* ล็อคให้ค้างอยู่หน้าแรก */
+  top: 0;
   z-index: 1;
+  perspective: 1500px; /* เพิ่มมิติให้ดูลึกขึ้น */
+  overflow: hidden;
 }
 
 .card {
   width: min(90vw, 600px);
   aspect-ratio: 600 / 350;
-  height: auto;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.1s linear;
-
-  /* กำหนดอนิเมชั่น */
-  animation: fadeOut linear;
-  animation-timeline: scroll(); /* ผูกอนิเมชั่นกับการเลื่อนหน้าจอ */
-  animation-range: exit 0% exit 100%; /* เริ่มจางเมื่อเริ่มเลื่อนออก และหายไปเมื่อเลื่อนพ้นหน้าจอ */
+  
+  /* แก้จุดนี้: ใช้ animation-fill-mode: forwards เพื่อให้จางแล้วหายไปเลย */
+  animation: fadeOutScroll linear forwards;
+  animation-timeline: scroll();
+  /* ปรับ range ให้เริ่มจางตั้งแต่เริ่มไถ (entry) หรือช่วงเลื่อนออก (exit) */
+  animation-range: exit 0% exit 80%; 
 }
 
-.card-face{
+/* ส่วนของ Card Face (คงเดิมแต่เพิ่มมิติ) */
+.card-face {
   position: absolute;
   inset: 0;
   padding: 20px;
   border-radius: 16px;
-  backface-visibility: hidden;
+  backface-visibility: hidden; /* สำคัญ: ห้ามลบ */
   display: flex;
   flex-direction: column;
   justify-content: center;
   background: whitesmoke;
   color: black;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
-
-
 .back {
-  color: black;
-  transform: rotateY(180deg);
-  background: whitesmoke;
+  transform: rotateY(180deg); /* หน้าหลังยังอยู่เหมือนเดิม */
   text-align: center;
 }
 
-.line {
-  width: 100%;
-  height: 50px;
-  background: black;
-  margin-bottom: 12px;
-}
-
-@keyframes fadeOut {
+/* ========== ANIMATION ========== */
+@keyframes fadeOutScroll {
+  from {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1); 
+  }
   to {
     opacity: 0;
-    transform: scale(0.8); /* ย่อตัวเล็กลงด้วยเพื่อให้ดูนุ่มนวล */
+    /* สำคัญ: ต้องใส่ rotateY ค้างไว้ด้วยถ้าคุณมีการทำ hover พลิกการ์ด */
+    /* และเพิ่ม translateZ เพื่อให้การ์ดดูเหมือนถอยหลังลงไปในจอ */
+    transform: scale(0.5) translateZ(-500px); 
   }
 }
-
 /* ========== ABOUT ========== */
 .about {
   display: flex;
@@ -102,8 +97,9 @@ body {
   padding: 100px 10%;
   align-items: center;
   position: relative;
-  z-index: 2;
+  z-index: 10;
   min-height: 100vh;
+  margin-top: 50vh;
 }
 
 .about-text {
