@@ -34,12 +34,16 @@ body {
 /* ========== CARD ========== */
 .scene {
   min-height: 60vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   /* align-items: flex-start; */
+  position: sticky;
   align-items: center;
   padding: 0;
   perspective: 1200px;
+  top: 0;
+  z-index: 1;
 }
 
 .card {
@@ -47,11 +51,24 @@ body {
   width: 600px;
   height: 350px; */
   width: min(90vw, 600px);
+  max-width: 500px;
   aspect-ratio: 600 / 350;
   height: auto;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.1s linear;
+
+  /* กำหนดอนิเมชั่น */
+  animation: fadeOut linear;
+  animation-timeline: scroll(); /* ผูกอนิเมชั่นกับการเลื่อนหน้าจอ */
+  animation-range: exit 0% exit 100%; /* เริ่มจางเมื่อเริ่มเลื่อนออก และหายไปเมื่อเลื่อนพ้นหน้าจอ */
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.8); /* ย่อตัวเล็กลงด้วยเพื่อให้ดูนุ่มนวล */
+  }
 }
 
 .card-face{
@@ -89,7 +106,9 @@ body {
   gap: 40px;
   padding: 100px 10%;
   align-items: center;
-  
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
 }
 
 .about-text {

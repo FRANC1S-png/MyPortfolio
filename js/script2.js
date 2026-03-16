@@ -424,3 +424,20 @@ function enableResize(win) {
 enableResize(folderWindow);
 enableResize(folderWindow2);
 enableResize(folderWindow3);
+
+window.addEventListener('scroll', () => {
+  const card = document.querySelector('.card');
+  const scrollPosition = window.scrollY;
+  const windowHeight = window.innerHeight;
+
+  // คำนวณความจาง: ยิ่งเลื่อนลง Opacity ยิ่งลดลง
+  // 1 - (ระยะเลื่อน / ครึ่งหนึ่งของความสูงจอ)
+  let opacity = 1 - (scrollPosition / (windowHeight * 0.5));
+  
+  if (opacity >= 0) {
+    card.style.opacity = opacity;
+    card.style.transform = `scale(${0.8 + (opacity * 0.2)})`; // ค่อยๆ ย่อตัวลง
+  } else {
+    card.style.opacity = 0;
+  }
+});
