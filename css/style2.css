@@ -24,7 +24,7 @@ a {
 
 body {
   margin: 0;
-  font-family: monospace , 'Prompt', sans-serif;
+  font-family: monospace , sans-serif;
   background: #0b0b0b;
   color: #fff; 
   overflow-x: hidden;
@@ -123,6 +123,11 @@ body {
   /* ตัวคุมความสมูท */
   transition: opacity 0.1s linear, transform 0.1s linear;
   will-change: opacity, transform;
+
+  /* ใส่การจางหายที่นี่ */
+  animation: fadeOutScroll linear forwards;
+  animation-timeline: scroll(root); /* อ้างอิงการเลื่อนของหน้าเว็บทั้งหมด */
+  animation-range: exit 0% exit 100%;
 }
 
 .about-text {
@@ -136,6 +141,7 @@ body {
 
 /* ========== LEARNING ========== */
 .learning {
+  z-index: 11;
   padding: 80px 10%;
 }
 
