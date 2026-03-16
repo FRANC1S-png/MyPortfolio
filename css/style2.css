@@ -56,16 +56,7 @@ body {
   animation-range: exit 0% exit 100%; 
 }
 
-@keyframes fadeAndScale {
-  from {
-    opacity: 1;
-    transform: scale(1); /* หรือใส่ค่า rotateY(0deg) ถ้าเดิมคุณมีหมุนไว้ */
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.5) translateZ(-200px); /* ย่อลงและดันไปข้างหลังในมิติ 3D */
-  }
-}
+
 
 .card-face {
   position: absolute;
@@ -81,11 +72,6 @@ body {
   box-shadow: 0 15px 35px rgba(0,0,0,0.2); /* เพิ่มมิติให้การ์ด */
 }
 
-/* ถ้ามีการใช้ Hover ให้พลิกการ์ดอยู่ ต้องระวังเรื่องการทับซ้อน */
-/* แนะนำให้ใส่ transition เฉพาะตอน hover */
-.scene:hover .card {
-  /* transform: rotateY(180deg); */ /* ถ้าจะให้พลิกตอน hover */
-}
 
 
 
@@ -101,6 +87,17 @@ body {
   height: 50px;
   background: black;
   margin-bottom: 12px;
+}
+
+@keyframes fadeAndScale {
+  from {
+    opacity: 1;
+    transform: scale(1); /* หรือใส่ค่า rotateY(0deg) ถ้าเดิมคุณมีหมุนไว้ */
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.5) translateZ(-200px); /* ย่อลงและดันไปข้างหลังในมิติ 3D */
+  }
 }
 
 /* ========== ABOUT ========== */
