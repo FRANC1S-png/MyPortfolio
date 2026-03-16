@@ -495,19 +495,53 @@ window.addEventListener('scroll', () => {
     });
 
 
-    /* =========================================
-       3. อนิเมชั่น "DONT OVERLAP ME" (ท้ายเว็บ)
-       ========================================= */
-    const warning = document.getElementById('overlap-warning');
-    // เช็คระยะล่างสุดของเว็บแบบแม่นยำขึ้น
-    const docHeight = document.documentElement.scrollHeight;
-    const isBottom = (window.innerHeight + window.scrollY) >= docHeight - 100;
+   let scrollAttempts = 0;
+const REQUIRED_ATTEMPTS = 3; // จำนวนครั้งที่ต้องไถเพิ่ม (2-3 ครั้ง)
+let isWarningShown = false;
 
-    if (isBottom) {
-        warning.style.opacity = 1;
-        warning.style.transform = 'translateY(0)';
-    } else {
+window.addEventListener('wheel', (e) => {
+    // เช็คว่าเลื่อนลงสุดจอหรือยัง
+    const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10;
+    const warning = document.getElementById('overlap-warning');
+
+    if (isAtBottom && e.deltaY > 0) {
+        // ถ้าอยู่ล่างสุดแล้วยังพยายามเลื่อนลง (deltaY > 0)
+        scrollAttempts++;
+
+        if (scrollAttempts >= REQUIRED_ATTEMPTS) {
+            // แสดงข้อความ
+            warning.style.opacity = 1;
+            warning.style.transform = 'translateY(-20px) scale(1.1)';
+            isWarningShown = true;
+        } else {
+            // อนิเมชั่นสั่นเล็กน้อยตอนชน (ฟีลลิ่งชนกำแพง)
+            warning.style.opacity = 0.3;
+            warning.style.transform = `translateY(${-scrollAttempts * 10}px)`;
+        }
+    } else if (e.deltaY < 0) {
+        // ถ้าเลื่อนขึ้น ให้รีเซ็ตค่า
+        scrollAttempts = 0;
         warning.style.opacity = 0;
-        warning.style.transform = 'translateY(20px)'; // เพิ่มการลอยขึ้นเล็กน้อย
+        warning.style.transform = 'translateY(20px) scale(1)';
+        isWarningShown = false;
     }
+}, { passive: false });
+
+// สำหรับมือถือ (Touch)
+let touchStartY = 0;
+window.addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', e => {
+    const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10;
+    const touchY = e.touches[0].clientY;
+    
+    if (isAtBottom && touchY < touchStartY) { // ปัดขึ้นเพื่อเลื่อนลงล่าง
+        scrollAttempts++;
+        if (scrollAttempts >= 15) { // มือถือค่าจะขึ้นไวหน่อย เลยใช้ 15
+            document.getElementById('overlap-warning').style.opacity = 1;
+        }
+    }
+}, { passive: true });
 });
