@@ -426,7 +426,7 @@ enableResize(folderWindow2);
 enableResize(folderWindow3);
 
 window.addEventListener('scroll', () => {
-  const card = document.querySelector('.card');
+  const card = document.querySelector('.card', '.about');
   const scrollPosition = window.scrollY;
   const windowHeight = window.innerHeight;
 
