@@ -433,40 +433,81 @@ window.addEventListener('scroll', () => {
     const scrollPosition = window.scrollY;
     const windowHeight = window.innerHeight;
 
-    // --- ปรับการจางของการ์ด ---
-    // เปลี่ยนจาก 0.6 เป็น 0.3 เพื่อให้หายไปตั้งแต่เริ่มเลื่อนนิดเดียว
-    let cardOpacity = 1 - (scrollPosition / (windowHeight * 0.3)); 
+    /* =========================================
+       1. อนิเมชั่นการ์ด (Fade Out - ธรรมชาติ)
+       ========================================= */
+    // จองพื้นที่ 50% ของหน้าจอแรกเพื่อให้การ์ดค่อยๆ จาง
+    const cardFadeStart = 0; 
+    const cardFadeEnd = windowHeight * 0.5;
     
-    if (cardOpacity > 0) {
+    // คำนวณ Scroll Progress (0 ถึง 1)
+    let cardProgress = (scrollPosition - cardFadeStart) / (cardFadeEnd - cardFadeStart);
+    cardProgress = Math.max(0, Math.min(1, cardProgress)); // Limit 0-1
+
+    // 🌟 พระเอก: ฟังก์ชัน Easing (Ease-In-Out Quad)
+    // ทำให้การเปลี่ยนค่าดูนุ่มนวล ไม่แข็งแบบเส้นตรง
+    const easeInOutQuad = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    let smoothedProgress = easeInOutQuad(cardProgress);
+
+    // คำนวณ Opacity และ Scale โดยใช้ค่าที่นุ่มนวลแล้ว
+    let cardOpacity = 1 - smoothedProgress;
+    let cardScale = 1 - (smoothedProgress * 0.2); // ย่อลงสูงสุด 20% (เหลือ 0.8)
+
+    // สั่งการทำงาน CSS
+    if (cardOpacity > 0.01) { // ถ้ายังไม่หายสนิท
         cardShifter.style.opacity = cardOpacity;
-        // ปรับ scale ให้ย่อลงพร้อมกัน
-        cardShifter.style.transform = `translate(-50%, -50%) scale(${0.8 + (cardOpacity * 0.2)})`;
+        cardShifter.style.transform = `translate(-50%, -50%) scale(${cardScale})`;
         cardShifter.style.visibility = 'visible';
         cardShifter.style.pointerEvents = 'auto';
-    } else {
+    } else { // ถ้าหายไปแล้ว
         cardShifter.style.opacity = 0;
         cardShifter.style.visibility = 'hidden';
         cardShifter.style.pointerEvents = 'none';
     }
 
-    // --- ส่วนของ Section อื่นๆ ---
+
+    /* =========================================
+       2. อนิเมชั่น Section อื่นๆ (Fade In/Out)
+       ========================================= */
     const sections = document.querySelectorAll('.about, .learning, .folder-con, .contact');
+    
     sections.forEach(sec => {
         const rect = sec.getBoundingClientRect();
-        if (rect.top < 0) {
-            // ส่วนที่กำลังจะเลื่อนพ้นขอบบน ให้จางหายไป
-            let secOpacity = 1 - (Math.abs(rect.top) / (rect.height * 0.5));
-            sec.style.opacity = secOpacity < 0 ? 0 : secOpacity;
+        const secHeight = rect.height;
+        
+        // จุดที่ Section จะเริ่มจางหายเมื่อเลื่อนพ้นขอบบน
+        const fadeOutPoint = windowHeight * 0.1; 
+
+        // คำนวณความจางเมื่อเลื่อนพ้นขอบบน (Ease-Out)
+        if (rect.top < fadeOutPoint) {
+            // คำนวณ Progress (0 เมื่ออยู่จุดเริ่มจาง, 1 เมื่อหายสนิท)
+            let outProgress = (fadeOutPoint - rect.top) / (secHeight * 0.6);
+            outProgress = Math.max(0, Math.min(1, outProgress));
+            
+            // ใช้ Ease-Out เพื่อให้ตอนหายมันนุ่มนวล
+            const easeOutQuad = t => t * (2 - t);
+            let smoothedOut = easeOutQuad(outProgress);
+            
+            sec.style.opacity = 1 - smoothedOut;
         } else {
             sec.style.opacity = 1;
         }
     });
 
-    // --- ข้อความแจ้งเตือนท้ายเว็บ ---
+
+    /* =========================================
+       3. อนิเมชั่น "DONT OVERLAP ME" (ท้ายเว็บ)
+       ========================================= */
     const warning = document.getElementById('overlap-warning');
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+    // เช็คระยะล่างสุดของเว็บแบบแม่นยำขึ้น
+    const docHeight = document.documentElement.scrollHeight;
+    const isBottom = (window.innerHeight + window.scrollY) >= docHeight - 100;
+
+    if (isBottom) {
         warning.style.opacity = 1;
+        warning.style.transform = 'translateY(0)';
     } else {
         warning.style.opacity = 0;
+        warning.style.transform = 'translateY(20px)'; // เพิ่มการลอยขึ้นเล็กน้อย
     }
 });
