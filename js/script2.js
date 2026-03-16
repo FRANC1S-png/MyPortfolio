@@ -429,44 +429,44 @@ enableResize(folderWindow3);
 const sections = document.querySelectorAll('.about, .learning, .folder-con, .contact');
 
 window.addEventListener('scroll', () => {
-    // เลือกการ์ดและเลเยอร์ที่คุมการจาง
     const cardShifter = document.querySelector('.card-shifter');
-    const scene = document.querySelector('.scene');
     const scrollPosition = window.scrollY;
     const windowHeight = window.innerHeight;
 
-    // คำนวณความจางของการ์ด (หายไปภายในระยะครึ่งหน้าจอแรก)
-    let cardOpacity = 1 - (scrollPosition / (windowHeight * 0.6));
+    // --- ปรับการจางของการ์ด ---
+    // เปลี่ยนจาก 0.6 เป็น 0.3 เพื่อให้หายไปตั้งแต่เริ่มเลื่อนนิดเดียว
+    let cardOpacity = 1 - (scrollPosition / (windowHeight * 0.3)); 
     
     if (cardOpacity > 0) {
         cardShifter.style.opacity = cardOpacity;
-        cardShifter.style.transform = `scale(${0.8 + (cardOpacity * 0.2)})`;
-        cardShifter.style.visibility = 'visible'; // แสดงการ์ดเมื่อยังจางไม่หมด
-        scene.style.pointerEvents = 'auto';      // ให้ยังกดหรือ hover การ์ดได้
+        // ปรับ scale ให้ย่อลงพร้อมกัน
+        cardShifter.style.transform = `translate(-50%, -50%) scale(${0.8 + (cardOpacity * 0.2)})`;
+        cardShifter.style.visibility = 'visible';
+        cardShifter.style.pointerEvents = 'auto';
     } else {
         cardShifter.style.opacity = 0;
-        cardShifter.style.visibility = 'hidden';  // หายไปเลย ไม่ขวางทาง
-        scene.style.pointerEvents = 'none';      // ปิดการรับเหตุการณ์เมาส์ ไม่ให้บังปุ่มข้างล่าง
+        cardShifter.style.visibility = 'hidden';
+        cardShifter.style.pointerEvents = 'none';
     }
 
-    // --- ส่วนของ Section อื่นๆ (About, Learning, etc.) ---
+    // --- ส่วนของ Section อื่นๆ ---
     const sections = document.querySelectorAll('.about, .learning, .folder-con, .contact');
     sections.forEach(sec => {
         const rect = sec.getBoundingClientRect();
-        // ถ้าเลื่อนขึ้นจนเกือบพ้นจอ (ขอบล่างของ Section อยู่ใกล้ขอบบนของจอ)
         if (rect.top < 0) {
-            let secOpacity = 1 - (Math.abs(rect.top) / (rect.height * 0.8));
+            // ส่วนที่กำลังจะเลื่อนพ้นขอบบน ให้จางหายไป
+            let secOpacity = 1 - (Math.abs(rect.top) / (rect.height * 0.5));
             sec.style.opacity = secOpacity < 0 ? 0 : secOpacity;
         } else {
             sec.style.opacity = 1;
         }
     });
 
-
-    // เช็คระยะล่างสุดของเว็บ
-if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
-    document.getElementById('overlap-warning').style.opacity = 1;
-} else {
-    document.getElementById('overlap-warning').style.opacity = 0;
-}
+    // --- ข้อความแจ้งเตือนท้ายเว็บ ---
+    const warning = document.getElementById('overlap-warning');
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+        warning.style.opacity = 1;
+    } else {
+        warning.style.opacity = 0;
+    }
 });
