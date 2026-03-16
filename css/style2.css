@@ -37,57 +37,61 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: sticky; /* ล็อคให้ค้างอยู่หน้าแรก */
+  position: sticky;
   top: 0;
   z-index: 1;
-  perspective: 1500px; /* เพิ่มมิติให้ดูลึกขึ้น */
-  overflow: hidden;
+  perspective: 2000px; /* เพิ่มค่าให้ลึกขึ้นเพื่อมิติที่สวย */
 }
 
-.card {
+/* Layer ใหม่: ตัวคุมการจางหายตอน Scroll */
+.card-shifter {
   width: min(90vw, 600px);
   aspect-ratio: 600 / 350;
-  position: relative;
-  transform-style: preserve-3d;
-  
-  /* แก้จุดนี้: ใช้ animation-fill-mode: forwards เพื่อให้จางแล้วหายไปเลย */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* ใส่การจางหายที่นี่ */
   animation: fadeOutScroll linear forwards;
-  animation-timeline: scroll();
-  /* ปรับ range ให้เริ่มจางตั้งแต่เริ่มไถ (entry) หรือช่วงเลื่อนออก (exit) */
-  animation-range: exit 0% exit 80%; 
+  animation-timeline: scroll(root); /* อ้างอิงการเลื่อนของหน้าเว็บทั้งหมด */
+  animation-range: exit 0% exit 100%;
 }
 
-/* ส่วนของ Card Face (คงเดิมแต่เพิ่มมิติ) */
+/* Layer เดิม: ตัวการ์ด 3D ของคุณ */
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* พลิกให้นุ่มนวล */
+}
+
+/* สั่งให้การ์ดพลิกเมื่อ Hover (ด้านหลังจะไม่หายแล้ว) */
+.card-shifter:hover .card {
+  transform: rotateY(180deg);
+}
+
 .card-face {
   position: absolute;
   inset: 0;
-  padding: 20px;
+  backface-visibility: hidden; /* ล็อคให้หน้าหลังแยกกันชัดเจน */
   border-radius: 16px;
-  backface-visibility: hidden; /* สำคัญ: ห้ามลบ */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background: whitesmoke;
-  color: black;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
 .back {
-  transform: rotateY(180deg); /* หน้าหลังยังอยู่เหมือนเดิม */
-  text-align: center;
+  transform: rotateY(180deg); /* ด้านหลังยังคงกลับด้านรอไว้ */
 }
 
-/* ========== ANIMATION ========== */
+/* อนิเมชั่นตอนเลื่อนจอลง */
 @keyframes fadeOutScroll {
-  from {
+  0% {
     opacity: 1;
-    transform: rotateY(0deg) scale(1); 
+    transform: scale(1) translateY(0);
   }
-  to {
+  100% {
     opacity: 0;
-    /* สำคัญ: ต้องใส่ rotateY ค้างไว้ด้วยถ้าคุณมีการทำ hover พลิกการ์ด */
-    /* และเพิ่ม translateZ เพื่อให้การ์ดดูเหมือนถอยหลังลงไปในจอ */
-    transform: scale(0.5) translateZ(-500px); 
+    transform: scale(0.5) translateZ(-500px) translateY(-100px); /* ถอยหลังและเลื่อนขึ้นเล็กน้อย */
   }
 }
 /* ========== ABOUT ========== */
