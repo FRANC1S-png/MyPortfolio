@@ -23,9 +23,10 @@ a {
 }
 
 body {
+  background-color: #ff4444;
   margin: 0;
   font-family: monospace , sans-serif;
-  background: #b67373;
+  background: #0b0b0b;
   color: #fff; 
   overflow-x: hidden;
 }
