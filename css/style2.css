@@ -74,6 +74,15 @@ body {
   border-radius: 16px;
   background: whitesmoke;
   color: black;
+
+  /* --- เพิ่มแสงเงาตรงนี้ --- */
+  /* นุ่มนวล ดูลอย (Soft & Floating) */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), /* เงาหลัก นุ่มๆ กว้างๆ */
+              0 5px 15px rgba(0, 0, 0, 0.1);  /* เงาใกล้ตัวการ์ด ให้ดูมีฐาน */
+  
+  /* เพิ่ม transition เพื่อให้เงาขยับนุ่มนวลเวลา 3D transform */
+  transition: box-shadow 0.1s linear; 
+  /* ---------------------- */
 }
 
 .back {
