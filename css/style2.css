@@ -635,7 +635,7 @@ width: 100% !important;
 
 .window3 {
   font-family: 'minecraft', monospace;
-  position: absolute;
+  position: fixed;
   top: 100px;
   left: 150px;
   width: 40%;
