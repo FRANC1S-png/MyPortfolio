@@ -85,6 +85,7 @@ windowConfigs.forEach(conf => {
         document.body.style.userSelect = "none"; // กันลากโดนตัวอักษรข้างหลัง
     });
 
+
 // Global Mouse Move สำหรับลาก (ลื่นขึ้น)
 document.addEventListener("mousemove", (e) => {
     if (!isWinDragging || !activeWin) return;
