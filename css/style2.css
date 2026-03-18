@@ -513,6 +513,7 @@ margin-left: 0;
   width: 100%; /* บังคับเต็มความกว้าง */
   pointer-events: auto;
   position: relative;
+  overscroll-behavior: contain;
 }
 
 .window-content p {
@@ -602,6 +603,7 @@ width: 100% !important;
   width: 100%; /* บังคับเต็มความกว้าง */
   pointer-events: auto;
   position: relative;
+  overscroll-behavior: contain;
 }
 
 .window-content2 p {
@@ -681,6 +683,7 @@ width: 100% !important;
   width: 100%; /* บังคับเต็มความกว้าง */
   pointer-events: auto;
   position: relative;
+  overscroll-behavior: contain;
 }
 
 .window-content3 p {
