@@ -503,13 +503,16 @@ margin-left: 0;
 }
 
 .window-content {
+  display: block;
   flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background: white;
-    color: black;
-    border: 5px solid black;
-    width: 100%; /* บังคับเต็มความกว้าง */
+  overflow-y: scroll;
+  padding: 20px;
+  background: white;
+  color: black;
+  border: 5px solid black;
+  width: 100%; /* บังคับเต็มความกว้าง */
+  pointer-events: auto;
+  position: relative;
 }
 
 .window-content p {
@@ -589,13 +592,16 @@ width: 100% !important;
 }
 
 .window-content2 {
+  display: block;
   flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background: white;
-    color: black;
-    border: 5px solid black;
-    width: 100%; /* บังคับเต็มความกว้าง */
+  overflow-y: auto;
+  padding: 20px;
+  background: white;
+  color: black;
+  border: 5px solid black;
+  width: 100%; /* บังคับเต็มความกว้าง */
+  pointer-events: auto;
+  position: relative;
 }
 
 .window-content2 p {
@@ -665,13 +671,16 @@ width: 100% !important;
 }
 
 .window-content3 {
-flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background: white;
-    color: black;
-    border: 5px solid black;
-    width: 100%; /* บังคับเต็มความกว้าง */
+  display: block;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: white;
+  color: black;
+  border: 5px solid black;
+  width: 100%; /* บังคับเต็มความกว้าง */
+  pointer-events: auto;
+  position: relative;
 }
 
 .window-content3 p {
@@ -697,7 +706,7 @@ flex: 1;
 .window,
 .window2,
 .window3 {
-  z-index: 9999 !important;
+    z-index: 9999 !important;
     display: none; 
     flex-direction: column;
     /* ถ้ายกเลิกการลากกลางคัน ให้มันกลับมาอยู่กลางจอ */
