@@ -541,3 +541,26 @@ window.addEventListener('touchmove', e => {
     }
 }, { passive: true });
 });
+
+// ฟังก์ชันป้องกันการ Scroll ทะลุไปหน้าเว็บข้างหลัง
+function preventScrollLeak(contentId) {
+    const content = document.getElementById(contentId);
+    if (!content) return;
+
+    content.addEventListener('wheel', (e) => {
+        const scrollTop = content.scrollTop;
+        const scrollHeight = content.scrollHeight;
+        const height = content.offsetHeight;
+        const delta = e.deltaY;
+
+        // ถ้าเลื่อนขึ้นตอนอยู่บนสุด หรือ เลื่อนลงตอนอยู่ล่างสุด
+        if ((delta < 0 && scrollTop <= 0) || (delta > 0 && scrollTop + height >= scrollHeight)) {
+            e.preventDefault(); // สั่งให้หยุดการ Scroll ทันที ไม่ให้ไปถึง Body
+        }
+    }, { passive: false });
+}
+
+// เรียกใช้กับทุก Content ของหน้าต่าง
+preventScrollLeak("folderWindowContent"); // แก้ ID ให้ตรงกับใน HTML ของคุณ
+preventScrollLeak("folderWindowContent2");
+preventScrollLeak("folderWindowContent3");
