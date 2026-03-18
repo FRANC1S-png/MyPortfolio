@@ -635,7 +635,7 @@ width: 100% !important;
 
 .window3 {
   font-family: 'minecraft', monospace;
-  position: fixed;
+  position: absolute;
   top: 100px;
   left: 150px;
   width: 40%;
@@ -664,7 +664,7 @@ width: 100% !important;
 }
 
 .window-content3 {
-flex: 1;
+    flex: 1;
     overflow-y: auto;
     padding: 20px;
     background: white;

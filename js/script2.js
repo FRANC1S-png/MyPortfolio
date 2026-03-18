@@ -561,6 +561,6 @@ function preventScrollLeak(contentId) {
 }
 
 // เรียกใช้กับทุก Content ของหน้าต่าง
-preventScrollLeak("folderWindowContent"); // แก้ ID ให้ตรงกับใน HTML ของคุณ
-preventScrollLeak("folderWindowContent2");
-preventScrollLeak("folderWindowContent3");
+preventScrollLeak("window-content"); // แก้ ID ให้ตรงกับใน HTML ของคุณ
+preventScrollLeak("window-content2");
+preventScrollLeak("window-content3");
