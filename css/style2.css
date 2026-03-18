@@ -694,7 +694,7 @@ flex: 1;
 .window,
 .window2,
 .window3 {
-  z-index: 1000; /* ดันให้สูงกว่า Section อื่นๆ */
+  z-index: 9999 !important;
     display: none; 
     flex-direction: column;
     /* ถ้ายกเลิกการลากกลางคัน ให้มันกลับมาอยู่กลางจอ */
@@ -778,8 +778,11 @@ flex: 1;
   .window-content img,
   .window-content2 img,
   .window-content3 img {
-    width: 300px;
+    width: 100% !important; 
+    max-width: 1000px; /* กำหนดขนาดสูงสุดที่ยอมรับได้ */
     height: auto;
+    display: block;
+    margin: 0 auto;
   }
 
   .learning img {
