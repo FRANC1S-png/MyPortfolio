@@ -711,14 +711,6 @@ flex: 1;
   user-select: none;
 }
 
-.window-content, 
-.window-content2, 
-.window-content3 {
-    flex: 1;
-    overflow-y: auto;
-    /* --- พระเอกของงานนี้ --- */
-    overscroll-behavior: contain; 
-}
 
 @keyframes openWin {
   from {
