@@ -230,80 +230,65 @@ document.addEventListener("click", (e) => {
   }
 });
 
-/* =========================================
-   NEW REFACTORED WINDOW SYSTEM
-   ========================================= */
+/*===========================
+  Open folder DOUBLE
+==============================*/
 
-// เก็บข้อมูลหน้าต่างทั้งหมดไว้ใน Array เพื่อจัดการง่ายๆ
-const winConfigs = [
-  { f: "folder", w: "folderWindow", c: "closeWin" },
-  { f: "folder2", w: "folderWindow2", c: "closeWin2" },
-  { f: "folder3", w: "folderWindow3", c: "closeWin3" }
-];
-
-let activeWin = null;
-let isWinDragging = false;
-let winOffsetX = 0, winOffsetY = 0;
-
-winConfigs.forEach(item => {
-  const folderIcon = document.getElementById(item.f);
-  const windowEl = document.getElementById(item.w);
-  const closeBtn = document.getElementById(item.c);
-  const header = windowEl.querySelector('.window-header');
-
-  // --- ฟังก์ชันเปิด (Double Click / Double Tap) ---
-  const openAction = (e) => {
-    if (e) e.stopPropagation();
-    windowEl.style.display = "flex";
-    windowEl.style.zIndex = "3000";
-    // รีเซ็ตตำแหน่งให้อยู่กลางจอครั้งแรกที่เปิด (ถ้าต้องการ)
-  };
-
-  folderIcon.addEventListener("dblclick", openAction);
-  folderIcon.addEventListener("touchend", (e) => {
-    const now = Date.now();
-    if (now - lastTouchTime < 350) openAction(e);
-    lastTouchTime = now;
-  });
-
-  // --- ฟังก์ชันปิด (แก้ปัญหากดไม่ติด) ---
-  closeBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation(); // สำคัญ: กันไม่ให้คลิกทะลุไปโฟลเดอร์ข้างหลัง
-    windowEl.style.display = "none";
-  });
-
-  // --- ระบบลาก (แก้ปัญหาลากแล้ววาร์ป/หลอน) ---
-  header.addEventListener("mousedown", (e) => {
-    isWinDragging = true;
-    activeWin = windowEl;
-
-    const rect = activeWin.getBoundingClientRect();
-    // ยกเลิก transform เพื่อใช้ left/top อย่างเดียว
-    activeWin.style.transform = "none";
-    activeWin.style.left = rect.left + "px";
-    activeWin.style.top = rect.top + "px";
-    activeWin.style.margin = "0";
-
-    winOffsetX = e.clientX - rect.left;
-    winOffsetY = e.clientY - rect.top;
-    
-    // ดันหน้าต่างที่กำลังลากขึ้นหน้าสุด
-    document.querySelectorAll('.window-box').forEach(b => b.style.zIndex = "2900");
-    activeWin.style.zIndex = "3000";
-  });
+// double click เปิด
+folder.addEventListener("dblclick", () => {
+  windowBox.style.display = "block";
 });
 
-// Event กลางสำหรับการขยับเมาส์
-document.addEventListener("mousemove", (e) => {
-  if (!isWinDragging || !activeWin) return;
-  activeWin.style.left = (e.clientX - winOffsetX) + "px";
-  activeWin.style.top = (e.clientY - winOffsetY) + "px";
+// ปิด window
+closeBtn.addEventListener("click", () => {
+  windowBox.style.display = "none";
 });
 
-document.addEventListener("mouseup", () => {
-  isWinDragging = false;
-  activeWin = null;
+folder.addEventListener("touchend", () => {
+  const now = Date.now();
+  if (now - lastTouchTime < 350) {
+    windowBox.style.display = "block"; // double tap
+  }
+  lastTouchTime = now;
+});
+
+//-------------Window 2-----------------
+// double click เปิด
+
+folder2.addEventListener("dblclick", () => {
+  windowBox2.style.display = "block";
+});
+
+// ปิด window
+closeBtn2.addEventListener("click", () => {
+  windowBox2.style.display = "none";
+});
+
+folder2.addEventListener("touchend", () => {
+  const now = Date.now();
+  if (now - lastTouchTime < 350) {
+    windowBox2.style.display = "block"; // double tap
+  }
+  lastTouchTime = now;
+});
+
+//-------------Window 3-----------------
+// double click เปิด
+folder3.addEventListener("dblclick", () => {
+  windowBox3.style.display = "block";
+});
+
+// ปิด window
+closeBtn3.addEventListener("click", () => {
+  windowBox3.style.display = "none";
+});
+
+folder3.addEventListener("touchend", () => {
+  const now = Date.now();
+  if (now - lastTouchTime < 350) {
+    windowBox3.style.display = "block"; // double tap
+  }
+  lastTouchTime = now;
 });
 
 // =============================
