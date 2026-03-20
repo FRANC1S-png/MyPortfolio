@@ -178,6 +178,10 @@ card.addEventListener("touchstart", (e) => {
 }, { passive: true });
 
 document.addEventListener("touchmove", (e) => {
+  if (e.target.closest('.window-content, .window-content2, .window-content3')) {
+    return; // ออกจากฟังก์ชัน ไม่ต้องไปสั่ง e.preventDefault()
+  }
+
   if (!isDragging) return;
   e.preventDefault(); // 🚫 ปิด scroll
   const touch = e.touches[0];
@@ -564,42 +568,3 @@ preventScrollLeak(".window-content");
 preventScrollLeak(".window-content2");
 preventScrollLeak(".window-content3");
 
-function enableDragScroll(selector) {
-    const slider = document.querySelector(selector);
-    if (!slider) return;
-
-    let isDown = false;
-    let startY;
-    let scrollTop;
-
-    slider.addEventListener('mousedown', (e) => {
-        isDown = true;
-        slider.classList.add('active');
-        startY = e.pageY - slider.offsetTop;
-        scrollTop = slider.scrollTop;
-        slider.style.cursor = 'grabbing';
-    });
-
-    slider.addEventListener('mouseleave', () => {
-        isDown = false;
-        slider.style.cursor = 'default';
-    });
-
-    slider.addEventListener('mouseup', () => {
-        isDown = false;
-        slider.style.cursor = 'default';
-    });
-
-    slider.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const y = e.pageY - slider.offsetTop;
-        const walk = (y - startY) * 2; // ความเร็วในการลาก (ปรับเลข 2 ได้)
-        slider.scrollTop = scrollTop - walk;
-    });
-}
-
-// เรียกใช้
-enableDragScroll(".window-content");
-enableDragScroll(".window-content2");
-enableDragScroll(".window-content3");

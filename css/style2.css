@@ -727,6 +727,7 @@ width: 100% !important;
     display: block;          /* มั่นใจว่าเป็นก้อน content */
     flex: 1;                 /* ยืดให้เต็มหน้าต่าง */
     overflow-y: auto !important; /* เปิด scrollbar */
+    max-height: 100%;
     overscroll-behavior: contain; /* กักแรงเลื่อนไว้ในนี้ */
     pointer-events: auto;    /* ให้คลิก/เลื่อนได้ */
     -webkit-overflow-scrolling: touch; /* ให้มือถือเลื่อนลื่น */
