@@ -542,9 +542,8 @@ window.addEventListener('touchmove', e => {
 }, { passive: true });
 });
 
-// ฟังก์ชันป้องกันการ Scroll ทะลุไปหน้าเว็บข้างหลัง
-function preventScrollLeak(contentId) {
-    const content = document.getElementById(contentId);
+function preventScrollLeak(selector) {
+    const content = document.querySelector(selector);
     if (!content) return;
 
     content.addEventListener('wheel', (e) => {
@@ -553,14 +552,54 @@ function preventScrollLeak(contentId) {
         const height = content.offsetHeight;
         const delta = e.deltaY;
 
-        // ถ้าเลื่อนขึ้นตอนอยู่บนสุด หรือ เลื่อนลงตอนอยู่ล่างสุด
+        // ถ้าเลื่อนสุดแล้ว ให้หยุด ไม่ต้องส่งแรงไป Body
         if ((delta < 0 && scrollTop <= 0) || (delta > 0 && scrollTop + height >= scrollHeight)) {
-            e.preventDefault(); // สั่งให้หยุดการ Scroll ทันที ไม่ให้ไปถึง Body
+            e.preventDefault();
         }
     }, { passive: false });
 }
 
-// เรียกใช้กับทุก Content ของหน้าต่าง
-preventScrollLeak("window-content"); // แก้ ID ให้ตรงกับใน HTML ของคุณ
-preventScrollLeak("window-content2");
-preventScrollLeak("window-content3");
+// เรียกใช้ (ส่งเป็น Class Selector)
+preventScrollLeak(".window-content");
+preventScrollLeak(".window-content2");
+preventScrollLeak(".window-content3");
+
+function enableDragScroll(selector) {
+    const slider = document.querySelector(selector);
+    if (!slider) return;
+
+    let isDown = false;
+    let startY;
+    let scrollTop;
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('active');
+        startY = e.pageY - slider.offsetTop;
+        scrollTop = slider.scrollTop;
+        slider.style.cursor = 'grabbing';
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.style.cursor = 'default';
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.style.cursor = 'default';
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const y = e.pageY - slider.offsetTop;
+        const walk = (y - startY) * 2; // ความเร็วในการลาก (ปรับเลข 2 ได้)
+        slider.scrollTop = scrollTop - walk;
+    });
+}
+
+// เรียกใช้
+enableDragScroll(".window-content");
+enableDragScroll(".window-content2");
+enableDragScroll(".window-content3");

@@ -595,7 +595,7 @@ width: 100% !important;
 .window-content2 {
   display: block;
   flex: 1;
-  overflow-y: auto;
+  overflow-y: auto !important;
   padding: 20px;
   background: white;
   color: black;
@@ -723,6 +723,14 @@ width: 100% !important;
   user-select: none;
 }
 
+.window-content, .window-content2, .window-content3 {
+    display: block;          /* มั่นใจว่าเป็นก้อน content */
+    flex: 1;                 /* ยืดให้เต็มหน้าต่าง */
+    overflow-y: auto !important; /* เปิด scrollbar */
+    overscroll-behavior: contain; /* กักแรงเลื่อนไว้ในนี้ */
+    pointer-events: auto;    /* ให้คลิก/เลื่อนได้ */
+    -webkit-overflow-scrolling: touch; /* ให้มือถือเลื่อนลื่น */
+}
 
 @keyframes openWin {
   from {
