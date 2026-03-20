@@ -227,7 +227,7 @@ body {
   padding: 5px;
   margin: 0;
 
-  z-index: 999; /* ⭐ สำคัญ */
+  z-index: 19; /* ⭐ สำคัญ */
 }
 
 .lang-menu li a {
@@ -709,7 +709,7 @@ width: 100% !important;
 .window,
 .window2,
 .window3 {
-    z-index: 9999 !important;
+    z-index: 20;
     display: none; 
     flex-direction: column;
     /* ถ้ายกเลิกการลากกลางคัน ให้มันกลับมาอยู่กลางจอ */
