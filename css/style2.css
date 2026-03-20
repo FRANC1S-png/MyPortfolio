@@ -30,6 +30,18 @@ body {
   overflow-x: hidden;
 }
 
+.cursor-follower {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transition: transform 0.1s ease-out; /* ความหน่วงนุ่มๆ */
+    transform: translate(-50%, -50%);
+}
+
 /* ========== SCENE ========== */
 .scene {
     height: 100vh;      /* ล็อคความสูงไว้ 1 จอ */

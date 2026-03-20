@@ -568,3 +568,15 @@ preventScrollLeak(".window-content");
 preventScrollLeak(".window-content2");
 preventScrollLeak(".window-content3");
 
+const follower = document.querySelector('.cursor-follower');
+window.addEventListener('mousemove', (e) => {
+    // ใช้ requestAnimationFrame หรือ transition ใน CSS ช่วยให้ลื่น
+    follower.style.left = e.clientX + 'px';
+    follower.style.top = e.clientY + 'px';
+});
+
+// ลูกเล่น: เวลา Hover โฟลเดอร์ ให้วงกลมขยายใหญ่ขึ้น
+document.querySelectorAll('.folder, .folder2, .folder3, button').forEach(el => {
+    el.addEventListener('mouseenter', () => follower.style.transform = 'translate(-50%, -50%) scale(1.5)');
+    el.addEventListener('mouseleave', () => follower.style.transform = 'translate(-50%, -50%) scale(1)');
+});
