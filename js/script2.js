@@ -125,7 +125,7 @@ function startDrag(x, y) {
   isDragging = true;
   startX = x;
   startY = y;
-  card.style.cursor = "grabbing";
+  card.style.cursor = "none";
 }
 
 /* =========================
@@ -142,6 +142,14 @@ function dragMove(x, y) {
   startX = x;
   startY = y;
   updateCardTransform();
+
+  // คำนวณตำแหน่งแสงสะท้อนตามการขยับ
+    const shineX = (x / window.innerWidth) * 100;
+    const shineY = (y / window.innerHeight) * 100;
+    card.style.setProperty('--shine-x', `${shineX}%`);
+    card.style.setProperty('--shine-y', `${shineY}%`);
+
+    updateCardTransform();
 }
 
 /* =========================
@@ -150,7 +158,7 @@ function dragMove(x, y) {
 
 function endDrag() {
   isDragging = false;
-  card.style.cursor = "grab";
+  card.style.cursor = "none";
 }
 
 /* ========================
@@ -202,13 +210,68 @@ window.addEventListener("scroll", () => {
    SMOOTH LOOP
 ========================= */
 
+// function animate() {
+//   currentScrollRotate += (targetScrollRotate - currentScrollRotate) * 0.08;
+//   updateCardTransform();
+//   requestAnimationFrame(animate);
+// }
+
+// animate();
+// --- 1. เพิ่มตัวแปร Cursor ไว้ด้านบนสุดของไฟล์ ---
+// --- ส่วนที่ 1: เตรียมตัวแปร (วางไว้ก่อนถึงฟังก์ชัน animate) ---
+
+const followers = document.querySelectorAll('.cursor-follower');
+let mousePosX = window.innerWidth / 2;
+let mousePosY = window.innerHeight / 2;
+let dots = Array.from({ length: followers.length }, () => ({ x: mousePosX, y: mousePosY }));
+
+// ดักจับเมาส์แบบ Global
+document.addEventListener('mousemove', (e) => {
+    mousePosX = e.clientX;
+    mousePosY = e.clientY;
+});
+
+// --- ส่วนที่ 2: ฟังก์ชัน animate แบบ All-in-One ---
 function animate() {
-  currentScrollRotate += (targetScrollRotate - currentScrollRotate) * 0.08;
-  updateCardTransform();
-  requestAnimationFrame(animate);
+    // A) อัปเดตการหมุนการ์ด (Logic เดิมของคุณ)
+    if (typeof currentScrollRotate !== 'undefined') {
+        currentScrollRotate += (targetScrollRotate - currentScrollRotate) * 0.08;
+        updateCardTransform();
+    }
+
+    // B) อัปเดต Ghost Cursor (LERP Logic)
+    dots.forEach((dot, i) => {
+        const targetX = i === 0 ? mousePosX : dots[i - 1].x;
+        const targetY = i === 0 ? mousePosY : dots[i - 1].y;
+
+        // ความหน่วง 0.15 (ถ้าอยากให้ช้ากว่านี้ปรับเป็น 0.08)
+        dot.x += (targetX - dot.x) * 0.15;
+        dot.y += (targetY - dot.y) * 0.15;
+
+        if (followers[i]) {
+            followers[i].style.left = dot.x + 'px';
+            followers[i].style.top = dot.y + 'px';
+        }
+    });
+
+    requestAnimationFrame(animate);
 }
 
+// เริ่มทำงานลูปเดียว
 animate();
+
+// --- ส่วนที่ 3: ระบบ Hover ขยายเมาส์ ---
+const hoverElements = 'a, button, .card-shifter, .folder, .folder2, .folder3, .window-header, .window-header2, .window-header3, .lang-btn';
+document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverElements)) {
+        followers.forEach(f => f.style.transform = 'translate(-50%, -50%) scale(2)');
+    }
+});
+document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverElements)) {
+        followers.forEach(f => f.style.transform = 'translate(-50%, -50%) scale(1)');
+    }
+});
 
 /* =========================
    INIT
@@ -568,15 +631,22 @@ preventScrollLeak(".window-content");
 preventScrollLeak(".window-content2");
 preventScrollLeak(".window-content3");
 
-const follower = document.querySelector('.cursor-follower');
-window.addEventListener('mousemove', (e) => {
-    // ใช้ requestAnimationFrame หรือ transition ใน CSS ช่วยให้ลื่น
-    follower.style.left = e.clientX + 'px';
-    follower.style.top = e.clientY + 'px';
+// ดึง Element ของการ์ดมาใช้งาน
+const cardEl = document.getElementById("card");
+
+// เมื่อเมาส์เข้าไปในเขตการ์ด
+cardEl.addEventListener('mouseenter', () => {
+    followers.forEach(f => {
+        f.classList.add('black-mode');
+        // แถม: ปรับ scale ให้เล็กลงหรือใหญ่ขึ้นตอนเข้าการ์ดได้ที่นี่
+        f.style.transform = 'translate(-50%, -50%) scale(1.2)';
+    });
 });
 
-// ลูกเล่น: เวลา Hover โฟลเดอร์ ให้วงกลมขยายใหญ่ขึ้น
-document.querySelectorAll('.folder, .folder2, .folder3, button').forEach(el => {
-    el.addEventListener('mouseenter', () => follower.style.transform = 'translate(-50%, -50%) scale(1.5)');
-    el.addEventListener('mouseleave', () => follower.style.transform = 'translate(-50%, -50%) scale(1)');
+// เมื่อเมาส์ออกจากเขตการ์ด กลับเป็นสีขาวเหมือนเดิม
+cardEl.addEventListener('mouseleave', () => {
+    followers.forEach(f => {
+        f.classList.remove('black-mode');
+        f.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
 });

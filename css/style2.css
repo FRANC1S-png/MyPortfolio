@@ -29,17 +29,37 @@ body {
   color: #fff; 
   overflow-x: hidden;
 }
+/* ซ่อนเมาส์จริง */
+html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, .window-header3 {
+    cursor: none !important;
+}
 
 .cursor-follower {
     position: fixed;
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
+    /* background: white; ใส่เป็นสีขาวทึบก่อนเพื่อทดสอบ */
     border: 2px solid white;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 10000;
-    transition: transform 0.1s ease-out; /* ความหน่วงนุ่มๆ */
+    z-index: 9999999; /* เลขเก้าเจ็ดตัวไปเลยครับ */
+    left: -100px;
+    top: -100px;
     transform: translate(-50%, -50%);
+    will-change: left, top;
+}
+
+/* หางจางๆ */
+.cursor-follower:nth-child(2) { width: 18px; height: 18px; opacity: 0.6; }
+.cursor-follower:nth-child(3) { width: 12px; height: 12px; opacity: 0.4; }
+.cursor-follower:nth-child(4) { width: 8px; height: 8px; opacity: 0.2; }
+
+/* สไตล์ปกติ (สีขาว) อยู่ใน .cursor-follower อยู่แล้ว */
+
+/* สไตล์เมื่อเมาส์กลายเป็นสีดำ */
+.cursor-follower.black-mode {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(0, 0, 0, 0.8) !important;
 }
 
 /* ========== SCENE ========== */
@@ -50,7 +70,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 5;
-    perspective: 2000px;
+    perspective: 1200px;
 }
 
 .card-shifter {
