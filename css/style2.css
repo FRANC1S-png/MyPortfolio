@@ -4,7 +4,9 @@
 
 @font-face {
   font-family: 'minecraft'; 
+  font-family: 'Montserrat-Thin';
   src: url('../fonts/Minecraft.ttf') format('truetype'); 
+  src: url('../fonts/Montserrat-Thin.ttf') format('truetype'); 
 }
 
 .prompt-regular {
@@ -24,7 +26,7 @@ a {
 
 body {
   margin: 0;
-  font-family: monospace;
+  font-family: monospace, 'Montserrat-Thin';
   background: #0b0b0b;
   color: #fff; 
   overflow-x: hidden;
