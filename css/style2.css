@@ -765,40 +765,46 @@ width: 100% !important;
     -webkit-overflow-scrolling: touch; /* ให้มือถือเลื่อนลื่น */
 }
 
+/* idle screen */
+
 #idle-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.9); /* พื้นหลังดำโปร่งแสง */
-    z-index: 9999999; /* ทับทุกอย่างรวมถึง Ghost Mouse */
-    display: none; /* ปิดไว้ก่อน */
+    background: black;
+    z-index: 9999999;
+    display: none; /* เริ่มต้นซ่อนไว้ */
     opacity: 0;
-    transition: opacity 1s ease;
-    pointer-events: none; /* เริ่มต้นให้คลิกทะลุได้ */
+    /* 💡 อนิเมชั่นจางเข้า-ออก 1 วินาที */
+    transition: opacity 1s ease-in-out, visibility 1s; 
+    pointer-events: none;
 }
 
 #idle-screen.active {
-    display: block;
     opacity: 1;
-    pointer-events: auto; /* เมื่อทำงานจริงจะรับ Event เพื่อใช้ปลุก */
+    pointer-events: auto;
 }
 
-#bubblesCanvas {
-    display: block;
-}
-
+/* เพิ่มให้ข้อความค่อยๆ ลอยขึ้นมาตอน Idle ทำงาน */
 .idle-text {
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     width: 100%;
     text-align: center;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.4);
     font-family: monospace;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    /* อนิเมชั่นเล็กๆ ให้ข้อความขยับขึ้นลงช้าๆ */
+    animation: pulseText 3s ease-in-out infinite;
 }
 
+@keyframes pulseText {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 0.7; transform: translateY(-5px); }
+}
 @keyframes openWin {
   from {
     transform: scale(0.9);

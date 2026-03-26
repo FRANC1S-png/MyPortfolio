@@ -652,25 +652,27 @@ cardEl.addEventListener('mouseleave', () => {
 });
 
 /* =========================
-   IDLE SCREEN SYSTEM
+   IDLE SCREEN SYSTEM (Updated)
 ========================= */
 
 const idleScreen = document.getElementById('idle-screen');
 const idleCanvas = document.getElementById('bubblesCanvas');
 const idleCtx = idleCanvas.getContext('2d');
 let idleTimer;
-const IDLE_TIME_LIMIT = 3 * 60 * 1000; // 💡 ตั้งค่าตรงนี้: 3 นาที (หน่วยเป็นมิลลิวินาที)
+// 💡 ปรับเป็น 2 นาที (2 * 60 วินาที * 1000 มิลลิวินาที)
+const IDLE_TIME_LIMIT = 2 * 60 * 1000; 
 
-// --- ส่วนของ Canvas Animation (ลูกกลมๆ) ---
 let idleBubbles = [];
+let isIdleActive = false;
+
 class IdleBubble {
     constructor() {
-        this.radius = Math.random() * 80 + 30;
+        this.radius = Math.random() * 30 + 10;
         this.x = Math.random() * window.innerWidth;
         this.y = Math.random() * window.innerHeight;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.color = `white`;
+        this.color = `rgba(255, 255, 255, ${Math.random() * 0.1 + 0.05})`;
     }
     update() {
         this.x += this.vx; this.y += this.vy;
@@ -690,39 +692,48 @@ function initIdleCanvas() {
 }
 
 function animateIdle() {
-    if (idleScreen.classList.contains('active')) {
+    if (isIdleActive) {
         idleCtx.clearRect(0, 0, idleCanvas.width, idleCanvas.height);
         idleBubbles.forEach(b => b.update());
         requestAnimationFrame(animateIdle);
     }
 }
 
-// --- ส่วนของ Logic การจับเวลา ---
 function showIdleScreen() {
+    isIdleActive = true;
     initIdleCanvas();
-    idleScreen.classList.add('active');
-    animateIdle();
-    // ซ่อนเมาส์ Ghost ตอน Idle (ถ้าต้องการ)
+    idleScreen.style.display = 'block'; // เปิด Display ก่อน
+    // ใช้ setTimeout เล็กน้อยเพื่อให้ Browser ทันคำนวณก่อนจะเปลี่ยน Opacity (ทำให้อนิเมชั่นทำงาน)
+    setTimeout(() => {
+        idleScreen.classList.add('active');
+        animateIdle();
+    }, 50);
+    
+    // ซ่อน Ghost Mouse นุ่มๆ
     document.querySelectorAll('.cursor-follower').forEach(f => f.style.opacity = '0');
 }
 
 function resetIdleTimer() {
-    // ถ้าหน้าจอ Idle แสดงอยู่ ให้ปิดมัน
-    if (idleScreen.classList.contains('active')) {
+    if (isIdleActive) {
+        isIdleActive = false;
         idleScreen.classList.remove('active');
+        
+        // รอให้ Fade Out จบก่อนค่อยสั่ง display: none (ตามเวลา transition ใน CSS)
+        setTimeout(() => {
+            if(!isIdleActive) idleScreen.style.display = 'none';
+        }, 1000); 
+
         document.querySelectorAll('.cursor-follower').forEach(f => f.style.opacity = '1');
     }
     
-    // ล้างเวลาเก่าและเริ่มนับใหม่
     clearTimeout(idleTimer);
     idleTimer = setTimeout(showIdleScreen, IDLE_TIME_LIMIT);
 }
 
-// ตรวจสอบการขยับเมาส์, การคลิก, และการกดปุ่ม
+// Event Listeners
 ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'].forEach(event => {
     window.addEventListener(event, resetIdleTimer);
 });
 
-// เริ่มนับเวลาครั้งแรก
 resetIdleTimer();
 window.addEventListener('resize', initIdleCanvas);
