@@ -659,7 +659,7 @@ const idleScreen = document.getElementById('idle-screen');
 const idleCanvas = document.getElementById('bubblesCanvas');
 const idleCtx = idleCanvas.getContext('2d');
 let idleTimer;
-const IDLE_TIME_LIMIT = 3 * 60 * 1000; // 💡 ตั้งค่าตรงนี้: 3 นาที (หน่วยเป็นมิลลิวินาที)
+const IDLE_TIME_LIMIT = 2 * 60 * 1000; // 💡 ตั้งค่าตรงนี้: 3 นาที (หน่วยเป็นมิลลิวินาที)
 
 // --- ส่วนของ Canvas Animation (ลูกกลมๆ) ---
 let idleBubbles = [];
