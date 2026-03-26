@@ -672,7 +672,7 @@ class IdleBubble {
         this.y = Math.random() * window.innerHeight;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.color = `rgba(255, 255, 255, ${Math.random() * 0.1 + 0.05})`;
+        this.color = `rgba(255, 255, 255)`;
     }
     update() {
         this.x += this.vx; this.y += this.vy;
