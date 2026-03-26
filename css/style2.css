@@ -114,7 +114,9 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
     height: 100%;
     backface-visibility: hidden; /* สำคัญมาก: ห้ามเห็นด้านหลังของตัวเอง */
     -webkit-backface-visibility: hidden;
-    border-radius: 20px;
+    border-radius: 16px;
+  background: whitesmoke;
+  color: black;
     display: flex;
     flex-direction: column;
 }
