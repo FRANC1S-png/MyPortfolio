@@ -665,12 +665,12 @@ const IDLE_TIME_LIMIT = 3 * 60 * 1000; // 💡 ตั้งค่าตรงน
 let idleBubbles = [];
 class IdleBubble {
     constructor() {
-        this.radius = Math.random() * 30 + 10;
+        this.radius = Math.random() * 80 + 40;
         this.x = Math.random() * window.innerWidth;
         this.y = Math.random() * window.innerHeight;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.color = `rgba(255, 255, 255, ${Math.random() * 0.1 + 0.05})`;
+        this.color = `white`;
     }
     update() {
         this.x += this.vx; this.y += this.vy;
