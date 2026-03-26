@@ -1,8 +1,3 @@
-:root {
-      /* กำหนดความหนาของการ์ด */
-      --card-thickness: 10px; 
-    }
-
 * {
   box-sizing: border-box;
 }
@@ -71,15 +66,13 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
 
 /* ========== SCENE ========== */
 .scene {
-    height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      /* 💡 Perspective: ยิ่งน้อย ยิ่งมิติพุ่ง */
-      perspective: 1200px; 
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
+    height: 100vh;      /* ล็อคความสูงไว้ 1 จอ */
+    position: relative; /* เปลี่ยนจาก sticky เป็น relative */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    perspective: 1200px;
 }
 
 .card-shifter {
@@ -101,22 +94,7 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.1s linear; 
-  transform: rotateY(0deg);
 }
-
-/* ========== ความหนาของการ์ด (3D Edge) ========== */
-    .card-edge {
-      position: absolute;
-      inset: 0;
-      background: #ccc; /* สีของสันขอบการ์ด */
-      border-radius: 20px;
-      /* ผลักไปอยู่ตรงกลางความหนา */
-      transform: translateZ(calc(var(--card-thickness) / -2));
-      /* ใช้ Box Shadow หลายชั้นเพื่อจำลองความลึกของขอบ */
-      box-shadow: 
-        0 0 0 1px rgba(0,0,0,0.2) inset,
-        0 0 calc(var(--card-thickness) * 2) rgba(0,0,0,0.5);
-    }
 
 /* สั่งให้การ์ดพลิกเมื่อ Hover (ด้านหลังจะไม่หายแล้ว) */
 .card-shifter:hover .card {
@@ -125,87 +103,27 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
 
 .card-face {
   position: absolute;
-      inset: 0;
-      background: whitesmoke;
-      color: black;
-      border-radius: 20px;
-      border: 1px solid rgba(0,0,0,0.1);
-      overflow: hidden;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  background: whitesmoke;
+  color: black;
 }
 
-/* --- FRONT --- */
-    .front {
-      /* ผลักออกมาข้างหน้าครึ่งหนึ่งของความหนา */
-      transform: translateZ(calc(var(--card-thickness) / 2));
-      z-index: 2;
-    }
 
-/* 💡 แสงสะท้อน (Shine) หน้าบัตร */
-    .shine {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.05) 45%,
-        rgba(255,255,255,0.2) 50%,
-        rgba(255,255,255,0.05) 55%,
-        rgba(255,255,255,0) 100%
-    );
-    background-size: 250% 250%;
-    /* ใช้ CSS Variable เพื่อให้ JS มาปรับตำแหน่งแสงได้ */
-    background-position: var(--shine-x, 50%) var(--shine-y, 50%);
-    pointer-events: none;
-    z-index: 10;
-    }
+.back {
+  color: black;
+  transform: rotateY(180deg);
+  background: whitesmoke;
+  text-align: center;
+}
 
-
-/* 💡 Parallax: เนื้อหาข้างในลอยได้ */
-    .card-front-layout {
-      display: flex;
-      padding: 30px;
-      height: 100%;
-      transform-style: preserve-3d; /* สำคัญ: เพื่อให้ Element ลูกลอยในแกน Z ได้ */
-    }
-
-.left img {
-      width: 130px;
-      border-radius: 10px;
-      /* ผลักรูปโปรไฟล์ให้ลอยออกมามากที่สุด */
-      transform: translateZ(50px);
-      filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3));
-    }
-
-    .left h1, .right.info {
-      /* ผลักตัวหนังสือให้ลอยออกมาปานกลาง */
-      transform: translateZ(30px);
-    }
-
-    .fav {
-      transform: translateZ(20px);
-    }
-
-    /* --- BACK --- */
-    .back {
-      /* พลิกไปด้านหลังและผลักออกไปครึ่งหนึ่งของความหนา */
-      transform: rotateY(180deg) translateZ(calc(var(--card-thickness) / 2));
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .back h2 { margin: 0; }
-    .back .line {
-      width: 100%;
-      height: 40px;
-      background: rgb(63, 61, 61);
-      margin: 20px 0;
-    }
+.line {
+  width: 100%;
+  height: 50px;
+  background: rgb(63, 61, 61);
+  padding-top: 50px;
+}
 
 
 /* อนิเมชั่นตอนเลื่อนจอลง */
