@@ -737,4 +737,3 @@ function resetIdleTimer() {
 
 resetIdleTimer();
 window.addEventListener('resize', initIdleCanvas);
-

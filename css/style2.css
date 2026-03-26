@@ -125,7 +125,6 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   padding-top: 50px;
 }
 
-
 /* อนิเมชั่นตอนเลื่อนจอลง */
 @keyframes fadeOutScroll {
   0% {
