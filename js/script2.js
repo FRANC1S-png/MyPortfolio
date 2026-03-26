@@ -667,7 +667,7 @@ let isIdleActive = false;
 
 class IdleBubble {
     constructor() {
-        this.radius = Math.random() * 200 + 90;
+        this.radius = Math.random() * 110 + 90;
         this.x = Math.random() * window.innerWidth;
         this.y = Math.random() * window.innerHeight;
         this.vx = (Math.random() - 0.5) * 0.5;
