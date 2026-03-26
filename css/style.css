@@ -16,6 +16,17 @@ body {
     font-family: monospace;
 }
 
+#bgDotsCanvas {
+    position: fixed; /* ล็อคติดหน้าจอ */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* ส่งไปอยู่หลังสุด */
+    background: #0b0b0b; /* สีเดียวกับตัวเว็บเดิม */
+    display: block;
+}
+
 .chat-window {
     font-size: large;
     width: 320px;

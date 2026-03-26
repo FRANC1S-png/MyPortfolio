@@ -148,3 +148,108 @@ inputEl.addEventListener('keydown', e => {
         send();
     }
 });
+
+
+/* =========================
+   INTERACTIVE DOTS BACKGROUND
+========================= */
+const bgCanvas = document.getElementById('bgDotsCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+
+let bgDots = [];
+const bgMouse = { x: null, y: null, radius: 150 }; // รัศมีวงกว้างขึ้นหน่อย
+
+window.addEventListener('mousemove', (e) => {
+    bgMouse.x = e.clientX;
+    bgMouse.y = e.clientY;
+});
+
+class BgDot {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.baseX = x;
+        this.baseY = y;
+        this.size = 1.5;
+        this.density = (Math.random() * 20) + 1;
+    }
+
+    draw() {
+        bgCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        bgCtx.beginPath();
+        bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        bgCtx.closePath();
+        bgCtx.fill();
+    }
+
+    update() {
+        let dx = bgMouse.x - this.x;
+        let dy = bgMouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < bgMouse.radius) {
+            let force = (bgMouse.radius - distance) / bgMouse.radius;
+            let directionX = (dx / distance) * force * this.density;
+            let directionY = (dy / distance) * force * this.density;
+            
+            this.x -= directionX;
+            this.y -= directionY;
+        } else {
+            if (this.x !== this.baseX) {
+                this.x -= (this.x - this.baseX) / 15;
+            }
+            if (this.y !== this.baseY) {
+                this.y -= (this.y - this.baseY) / 15;
+            }
+        }
+    }
+}
+
+function initBgDots() {
+    bgCanvas.width = window.innerWidth;
+    bgCanvas.height = window.innerHeight;
+    bgDots = [];
+    
+    // ปรับ Gap ให้กว้างขึ้นเพื่อไม่ให้จุดเยอะเกินจนหน่วงจอ (25-40 กำลังสวย)
+    const gap = 35; 
+    for (let y = 0; y < bgCanvas.height; y += gap) {
+        for (let x = 0; x < bgCanvas.width; x += gap) {
+            bgDots.push(new BgDot(x, y));
+        }
+    }
+}
+
+function connectDots() {
+    for (let a = 0; a < bgDots.length; a++) {
+        for (let b = a; b < bgDots.length; b++) {
+            let dx = bgDots[a].x - bgDots[b].x;
+            let dy = bgDots[a].y - bgDots[b].y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            // วาดเส้นเชื่อมถ้าจุดอยู่ใกล้กัน (เฉพาะจุดที่ขยับจากตำแหน่งเดิม)
+            if (distance < 45) {
+                let opacity = 1 - (distance / 45);
+                bgCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                bgCtx.lineWidth = 1;
+                bgCtx.beginPath();
+                bgCtx.moveTo(bgDots[a].x, bgDots[a].y);
+                bgCtx.lineTo(bgDots[b].x, bgDots[b].y);
+                bgCtx.stroke();
+            }
+        }
+    }
+}
+
+function animateBg() {
+    bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+    for (let i = 0; i < bgDots.length; i++) {
+        bgDots[i].update();
+        bgDots[i].draw();
+    }
+    connectDots(); // วาดเส้นเชื่อม
+    requestAnimationFrame(animateBg);
+}
+
+window.addEventListener('resize', initBgDots);
+initBgDots();
+animateBg();

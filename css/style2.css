@@ -151,7 +151,6 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
     position: relative;
     z-index: 10;      /* อยู่เหนือการ์ด */
     min-height: 100vh;
-    background: #0b0b0b; /* ใส่สีพื้นหลังให้ทึบเพื่อบังการ์ดข้างหลัง */
     margin-top: 5vh;    
     padding-bottom: 100px;   /* เปลี่ยนจาก 50vh เป็น 0 หรือตามความเหมาะสม */
 }
@@ -801,19 +800,6 @@ width: 100% !important;
     animation: pulseText 3s ease-in-out infinite;
 }
 
-/*------------------------------------
-  background
----------------------------------*/
-#bgDotsCanvas {
-    position: fixed; /* ล็อคติดหน้าจอ */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1; /* ส่งไปอยู่หลังสุด */
-    background: #0b0b0b; /* สีเดียวกับตัวเว็บเดิม */
-    display: block;
-}
 
 @keyframes pulseText {
     0%, 100% { opacity: 0.3; transform: translateY(0); }
