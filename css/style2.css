@@ -102,31 +102,13 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
 }
 
 .card-face {
-  /* position: absolute;
+  position: absolute;
   inset: 0;
   backface-visibility: hidden;
   border-radius: 16px;
   background: whitesmoke;
-  color: black; */
-
-  position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* สำคัญมาก: ห้ามเห็นด้านหลังของตัวเอง */
-    -webkit-backface-visibility: hidden;
-    border-radius: 16px;
-  background: whitesmoke;
   color: black;
-    display: flex;
-    flex-direction: column;
 }
-
-.card-front-layout{
-  z-index: 2;
-    transform: rotateY(0deg) translateZ(1px); /* ขยับออกมาข้างหน้า 1px */
-    background: #1a1a1a; /* สีพื้นหลังหน้าการ์ด */
-}
-
 
 
 .back {
@@ -134,8 +116,6 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   transform: rotateY(180deg);
   background: whitesmoke;
   text-align: center;
-  transform: rotateY(180deg) translateZ(1px); /* พลิกไปหลังแล้วขยับออกไป 1px */
-    background: #222; /* สีพื้นหลังหลังการ์ด */
 }
 
 .line {
@@ -145,49 +125,6 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   padding-top: 50px;
 }
 
-/* --- เพิ่มความหนา (3D Edge) แบบไม่รบกวนหน้าหลัง --- */
-.card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: #444; /* สีของสันขอบการ์ด */
-    border-radius: 20px;
-    transform: translateZ(-2px); /* ผลักไปอยู่ระหว่างกลาง */
-    box-shadow: 0 0 15px rgba(0,0,0,0.5); /* เงาฟุ้งๆ รอบการ์ด */
-}
-
-/* --- ทำให้เนื้อหาข้างในลอย (Parallax) --- */
-.card-front-layout {
-    transform-style: preserve-3d;
-}
-
-.left img {
-    transform: translateZ(40px); /* รูปโปรไฟล์ลอยออกมา */
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
-}
-
-.left h1, .right.info {
-    transform: translateZ(20px); /* ตัวอักษรลอยออกมานิดหน่อย */
-}
-
-.card-front::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        125deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.05) 45%,
-        rgba(255,255,255,0.2) 50%,
-        rgba(255,255,255,0.05) 55%,
-        rgba(255,255,255,0) 100%
-    );
-    background-size: 250% 250%;
-    background-position: var(--shine-x) var(--shine-y);
-    pointer-events: none;
-    z-index: 10;
-    border-radius: 20px;
-}
 
 /* อนิเมชั่นตอนเลื่อนจอลง */
 @keyframes fadeOutScroll {

@@ -111,25 +111,13 @@ document.addEventListener("mouseup", () => {
    UPDATE TRANSFORM
 ========================= */
 
-// function updateCardTransform() {
-//   card.style.transform = `
-//     rotateX(${rotateX + currentScrollRotate}deg)
-//     rotateY(${rotateY}deg)
-//     `;
-// }
-
-// ในฟังก์ชัน updateCardTransform()
 function updateCardTransform() {
-    // รวมค่าการหมุนจากการ Drag และการ Scroll
-    const totalRotateY = rotateY + currentScrollRotate;
-    card.style.transform = `rotateX(${rotateX}deg) rotateY(${totalRotateY}deg)`;
-
-    // คำนวณแสงสะท้อน (อ้างอิงจากองศาการหมุน)
-    const shineX = 50 + (rotateY / 2); 
-    const shineY = 50 + (rotateX / 2);
-    card.style.setProperty('--shine-x', `${shineX}%`);
-    card.style.setProperty('--shine-y', `${shineY}%`);
+  card.style.transform = `
+    rotateX(${rotateX + currentScrollRotate}deg)
+    rotateY(${rotateY}deg)
+    `;
 }
+
 
 /* =========================
    START DRAG
