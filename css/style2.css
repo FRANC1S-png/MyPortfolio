@@ -771,7 +771,7 @@ width: 100% !important;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: black;/* พื้นหลังดำโปร่งแสง */
+    background: rgba(0, 0, 0, 0.9); /* พื้นหลังดำโปร่งแสง */
     z-index: 9999999; /* ทับทุกอย่างรวมถึง Ghost Mouse */
     display: none; /* ปิดไว้ก่อน */
     opacity: 0;
