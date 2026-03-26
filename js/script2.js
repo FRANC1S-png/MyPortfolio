@@ -660,7 +660,7 @@ const idleCanvas = document.getElementById('bubblesCanvas');
 const idleCtx = idleCanvas.getContext('2d');
 let idleTimer;
 // 💡 ปรับเป็น 2 นาที (2 * 60 วินาที * 1000 มิลลิวินาที)
-const IDLE_TIME_LIMIT = 2 * 60 * 1000; 
+const IDLE_TIME_LIMIT = 1 * 60 * 1000; 
 
 let idleBubbles = [];
 let isIdleActive = false;
