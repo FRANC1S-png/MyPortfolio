@@ -277,7 +277,6 @@ document.addEventListener('mouseout', (e) => {
 /* =========================
    INIT
 ========================= */
-card.style.cursor = "grab";
 updateCardTransform();
 
 /*==================
@@ -739,3 +738,77 @@ function resetIdleTimer() {
 resetIdleTimer();
 window.addEventListener('resize', initIdleCanvas);
 
+/* =========================================
+       JS SECTION (เฉพาะส่วนการ์ด 3D)
+       ========================================= */
+    const shifter = document.getElementById('card-shifter');
+    const cursor = document.getElementById('cursor');
+
+    // เก็บองศาการหมุนปัจจุบัน
+    let currentRotateX = 0;
+    let currentRotateY = 0;
+
+    // 1. ระบบ Ghost Cursor & แสงสะท้อน (Shine)
+    document.addEventListener('mousemove', (e) => {
+      // อัปเดตตำแหน่ง Ghost Cursor
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+
+      // คำนวณตำแหน่งแสงสะท้อนตามเมาส์ (0 ถึง 100)
+      const shineX = (e.clientX / window.innerWidth) * 100;
+      const shineY = (e.clientY / window.innerHeight) * 100;
+      card.style.setProperty('--shine-x', `${shineX}%`);
+      card.style.setProperty('--shine-y', `${shineY}%`);
+
+      // ถ้าไม่ได้ลาก ให้ทำ Passive Tilt เอียงตามเมาส์เบาๆ
+      if (!isDragging) {
+        const tiltX = (window.innerHeight / 2 - e.clientY) / 15;
+        const tiltY = (e.clientX - window.innerWidth / 2) / 15;
+        applyRotation(tiltX, tiltY);
+      }
+    });
+
+    // 2. ระบบ Drag to Rotate (จับหมุน)
+    shifter.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      // ปิด Passive Tilt ชั่วคราวเพื่อให้การลากลื่นไหล
+      shifter.style.transition = 'none'; 
+      cursor.classList.add('black-mode'); // เปลี่ยนเมาส์เป็นสีดำตอนจับ
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      // ปรับความไวในการหมุน (0.5 คือความไว)
+      currentRotateY += dx * 0.5;
+      currentRotateX -= dy * 0.5;
+
+      // จำกัดองศาการหมุนแกน X ไม่ให้คว่ำเกินไป (Optional)
+      currentRotateX = Math.max(-80, Math.min(80, currentRotateX));
+
+      startX = e.clientX;
+      startY = e.clientY;
+
+      applyRotation(currentRotateX, currentRotateY);
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      // เปิด Animation เด้งกลับเมื่อปล่อยมือ
+      shifter.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      cursor.classList.remove('black-mode'); // เปลี่ยนเมาส์กลับเป็นสีขาว
+
+      // Optional: ปล่อยแล้วให้มันกลับมาอยู่ตรงกลาง (ถ้าอยากให้ล็อคท่าเดิมให้คอมเมนต์บรรทัดนี้ออก)
+      // currentRotateX = 0; currentRotateY = 0; applyRotation(0, 0);
+    });
+
+    function applyRotation(x, y) {
+      // สั่งหมุนที่ตัว shifter เพื่อให้ได้ Passive Tilt ที่นุ่มนวล
+      shifter.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
+    }
