@@ -650,3 +650,79 @@ cardEl.addEventListener('mouseleave', () => {
         f.style.transform = 'translate(-50%, -50%) scale(1)';
     });
 });
+
+/* =========================
+   IDLE SCREEN SYSTEM
+========================= */
+
+const idleScreen = document.getElementById('idle-screen');
+const idleCanvas = document.getElementById('bubblesCanvas');
+const idleCtx = idleCanvas.getContext('2d');
+let idleTimer;
+const IDLE_TIME_LIMIT = 3 * 60 * 1000; // 💡 ตั้งค่าตรงนี้: 3 นาที (หน่วยเป็นมิลลิวินาที)
+
+// --- ส่วนของ Canvas Animation (ลูกกลมๆ) ---
+let idleBubbles = [];
+class IdleBubble {
+    constructor() {
+        this.radius = Math.random() * 30 + 10;
+        this.x = Math.random() * window.innerWidth;
+        this.y = Math.random() * window.innerHeight;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.color = `rgba(255, 255, 255, ${Math.random() * 0.1 + 0.05})`;
+    }
+    update() {
+        this.x += this.vx; this.y += this.vy;
+        if (this.x > window.innerWidth || this.x < 0) this.vx *= -1;
+        if (this.y > window.innerHeight || this.y < 0) this.vy *= -1;
+        idleCtx.beginPath();
+        idleCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        idleCtx.fillStyle = this.color;
+        idleCtx.fill();
+    }
+}
+
+function initIdleCanvas() {
+    idleCanvas.width = window.innerWidth;
+    idleCanvas.height = window.innerHeight;
+    idleBubbles = Array.from({ length: 20 }, () => new IdleBubble());
+}
+
+function animateIdle() {
+    if (idleScreen.classList.contains('active')) {
+        idleCtx.clearRect(0, 0, idleCanvas.width, idleCanvas.height);
+        idleBubbles.forEach(b => b.update());
+        requestAnimationFrame(animateIdle);
+    }
+}
+
+// --- ส่วนของ Logic การจับเวลา ---
+function showIdleScreen() {
+    initIdleCanvas();
+    idleScreen.classList.add('active');
+    animateIdle();
+    // ซ่อนเมาส์ Ghost ตอน Idle (ถ้าต้องการ)
+    document.querySelectorAll('.cursor-follower').forEach(f => f.style.opacity = '0');
+}
+
+function resetIdleTimer() {
+    // ถ้าหน้าจอ Idle แสดงอยู่ ให้ปิดมัน
+    if (idleScreen.classList.contains('active')) {
+        idleScreen.classList.remove('active');
+        document.querySelectorAll('.cursor-follower').forEach(f => f.style.opacity = '1');
+    }
+    
+    // ล้างเวลาเก่าและเริ่มนับใหม่
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(showIdleScreen, IDLE_TIME_LIMIT);
+}
+
+// ตรวจสอบการขยับเมาส์, การคลิก, และการกดปุ่ม
+['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'].forEach(event => {
+    window.addEventListener(event, resetIdleTimer);
+});
+
+// เริ่มนับเวลาครั้งแรก
+resetIdleTimer();
+window.addEventListener('resize', initIdleCanvas);

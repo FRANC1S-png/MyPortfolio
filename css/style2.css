@@ -765,6 +765,40 @@ width: 100% !important;
     -webkit-overflow-scrolling: touch; /* ให้มือถือเลื่อนลื่น */
 }
 
+#idle-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9); /* พื้นหลังดำโปร่งแสง */
+    z-index: 9999999; /* ทับทุกอย่างรวมถึง Ghost Mouse */
+    display: none; /* ปิดไว้ก่อน */
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none; /* เริ่มต้นให้คลิกทะลุได้ */
+}
+
+#idle-screen.active {
+    display: block;
+    opacity: 1;
+    pointer-events: auto; /* เมื่อทำงานจริงจะรับ Event เพื่อใช้ปลุก */
+}
+
+#bubblesCanvas {
+    display: block;
+}
+
+.idle-text {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: rgba(255,255,255,0.3);
+    font-family: monospace;
+    letter-spacing: 2px;
+}
+
 @keyframes openWin {
   from {
     transform: scale(0.9);
