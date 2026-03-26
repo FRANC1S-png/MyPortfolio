@@ -175,7 +175,7 @@ class BgDot {
     }
 
     draw() {
-        bgCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        bgCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
         bgCtx.beginPath();
         bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         bgCtx.closePath();
@@ -229,7 +229,7 @@ function connectDots() {
             // วาดเส้นเชื่อมถ้าจุดอยู่ใกล้กัน (เฉพาะจุดที่ขยับจากตำแหน่งเดิม)
             if (distance < 45) {
                 let opacity = 1 - (distance / 45);
-                bgCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                bgCtx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.2})`;
                 bgCtx.lineWidth = 1;
                 bgCtx.beginPath();
                 bgCtx.moveTo(bgDots[a].x, bgDots[a].y);

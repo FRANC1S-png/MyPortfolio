@@ -23,7 +23,7 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: -1; /* ส่งไปอยู่หลังสุด */
-    background: #0b0b0b; /* สีเดียวกับตัวเว็บเดิม */
+    background: #aca9a9; /* สีเดียวกับตัวเว็บเดิม */
     display: block;
 }
 
