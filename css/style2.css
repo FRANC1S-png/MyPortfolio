@@ -4,9 +4,7 @@
 
 @font-face {
   font-family: 'minecraft'; 
-  font-family: 'Montserrat-Thin' !important;
   src: url('../fonts/Minecraft.ttf') format('truetype'); 
-  src: url('../fonts/Montserrat-Thin.ttf') format('truetype'); 
 }
 
 .prompt-regular {
@@ -16,7 +14,7 @@
 }
 
 code {
-  font-family: 'minecraft', 'Montserrat', monospace;
+  font-family: 'minecraft', monospace;
 }
 
 a {
@@ -26,7 +24,7 @@ a {
 
 body {
   margin: 0;
-  font-family: monospace, 'Montserrat-Thin', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: monospace;
   background: #0b0b0b;
   color: #fff; 
   overflow-x: hidden;
