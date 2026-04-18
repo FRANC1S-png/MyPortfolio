@@ -157,7 +157,7 @@ const bgCanvas = document.getElementById('bgDotsCanvas');
 const bgCtx = bgCanvas.getContext('2d');
 
 let bgDots = [];
-const bgMouse = { x: null, y: null, radius: 150 }; // รัศมีวงกว้างขึ้นหน่อย
+const bgMouse = { x: null, y: null, radius: 60 }; // รัศมีวงกว้างขึ้นหน่อย
 
 window.addEventListener('mousemove', (e) => {
     bgMouse.x = e.clientX;
@@ -211,7 +211,7 @@ function initBgDots() {
     bgDots = [];
     
     // ปรับ Gap ให้กว้างขึ้นเพื่อไม่ให้จุดเยอะเกินจนหน่วงจอ (25-40 กำลังสวย)
-    const gap = 35; 
+    const gap = 30 
     for (let y = 0; y < bgCanvas.height; y += gap) {
         for (let x = 0; x < bgCanvas.width; x += gap) {
             bgDots.push(new BgDot(x, y));
