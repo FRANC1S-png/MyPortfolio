@@ -183,6 +183,25 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   width: 160px;
 }
 
+/* Typing effect cursor */
+#about-typing::after {
+  content: "|";
+  display: inline-block;
+  animation: blink 0.7s infinite;
+  font-weight: bold;
+  color: inherit;
+  margin-left: 2px;
+}
+
+#about-typing.typed-done::after {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 /* ========== LEARNING ========== */
 .learning {
   z-index: 11;
@@ -460,6 +479,30 @@ margin-left: 0;
 }
 
 .folder3:hover {
+  border: 2px double white;
+  /* transform: scale(1.1); */
+  /* transition: transform 0.2s; */
+}
+
+/* ---------- FOLDER 4 ========== */
+
+.folder4 {
+  width: 80px;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}
+
+.folder4 img {
+  width: 64px;
+}
+
+.folder4 span {
+  font-size: 14px;
+  color: white;
+}
+
+.folder4:hover {
   border: 2px double white;
   /* transform: scale(1.1); */
   /* transition: transform 0.2s; */

@@ -28,6 +28,11 @@ const windowBox3 = document.getElementById("folderWindow3");
 const closeBtn3 = document.getElementById("closeWin3");
 const folderWindow3 = document.getElementById('folderWindow3');
 const folderHeader3 = document.getElementById('folderHeader3');
+const folder4 = document.getElementById("folder4");
+const windowBox4 = document.getElementById("folderWindow4");
+const closeBtn4 = document.getElementById("closeWin4");
+const folderWindow4 = document.getElementById('folderWindow4');
+const folderHeader4 = document.getElementById('folderHeader4');
 let offsetX = 0, offsetY = 0, IsDragging = false;
 
 // -----------------------------
@@ -107,6 +112,33 @@ document.addEventListener("mouseup", () => {
     IsDragging = false;
 });
 
+
+// -----------------------------
+// Dragging System window 4
+// -----------------------------
+
+folderHeader4.addEventListener("mousedown", (e) => {
+    IsDragging = true;
+    // แปลง transform ตำแหน่งจริงเมื่อเริ่มลาก
+    const rect = folderWindow4.getBoundingClientRect();
+    folderWindow4.style.transform = "none";
+    folderWindow4.style.left = rect.left + "px";
+    folderWindow4.style.top = rect.top + "px";
+    offsetX = e.clientX - folderWindow4.offsetLeft;
+    offsetY = e.clientY - folderWindow4.offsetTop;
+});
+
+
+
+document.addEventListener("mousemove", (e) => {
+    if (!IsDragging) return;
+    folderWindow4.style.left = (e.clientX - offsetX) + "px";
+    folderWindow4.style.top = (e.clientY - offsetY) + "px";
+});
+
+document.addEventListener("mouseup", () => {
+    IsDragging = false;
+});
 /* =========================
    UPDATE TRANSFORM
 ========================= */
@@ -187,7 +219,7 @@ card.addEventListener("touchstart", (e) => {
 }, { passive: true });
 
 document.addEventListener("touchmove", (e) => {
-  if (e.target.closest('.window-content, .window-content2, .window-content3')) {
+  if (e.target.closest('.window-content, .window-content2, .window-content3, .window-content4')) {
     return; // ออกจากฟังก์ชัน ไม่ต้องไปสั่ง e.preventDefault()
   }
 
@@ -262,7 +294,7 @@ function animate() {
 animate();
 
 // --- ส่วนที่ 3: ระบบ Hover ขยายเมาส์ ---
-const hoverElements = 'a, button, .card-shifter, .folder, .folder2, .folder3, .window-header, .window-header2, .window-header3';
+const hoverElements = 'a, button, .card-shifter, .folder, .folder2, .folder3, .folder4, .window-header, .window-header2, .window-header3, .window-header4';
 document.addEventListener('mouseover', (e) => {
     if (e.target.closest(hoverElements)) {
         followers.forEach(f => f.style.transform = 'translate(-50%, -50%) scale(2)');
@@ -342,6 +374,25 @@ folder3.addEventListener("touchend", () => {
   lastTouchTime = now;
 });
 
+//-------------Window 4-----------------
+// double click เปิด
+folder4.addEventListener("dblclick", () => {
+  windowBox4.style.display = "block";
+});
+
+// ปิด window
+closeBtn4.addEventListener("click", () => {
+  windowBox4.style.display = "none";
+});
+
+folder4.addEventListener("touchend", () => {
+  const now = Date.now();
+  if (now - lastTouchTime < 350) {
+    windowBox4.style.display = "block"; // double tap
+  }
+  lastTouchTime = now;
+});
+
 // =============================
 // 📱 TOUCH DRAG FOR WINDOWS
 // =============================
@@ -374,7 +425,7 @@ function enableTouchDrag(windowEl, headerEl) {
 enableTouchDrag(folderWindow, folderHeader);
 enableTouchDrag(folderWindow2, folderHeader2);
 enableTouchDrag(folderWindow3, folderHeader3);
-
+enableTouchDrag(folderWindow4, folderHeader4);
 // =============================
 // 🖱️ RESIZE FROM EDGES (DESKTOP)
 // =============================
@@ -445,6 +496,7 @@ function enableResize(win) {
 enableResize(folderWindow);
 enableResize(folderWindow2);
 enableResize(folderWindow3);
+enableResize(folderWindow4);
 
 // --- อนิเมชั่นจางหายสำหรับทุก Section ---
 const sections = document.querySelectorAll('.about, .learning, .folder-con, .contact');
@@ -614,6 +666,7 @@ function preventScrollLeak(selector) {
 preventScrollLeak(".window-content");
 preventScrollLeak(".window-content2");
 preventScrollLeak(".window-content3");
+preventScrollLeak(".window-content4");
 
 // ดึง Element ของการ์ดมาใช้งาน
 const cardEl = document.getElementById("card");
@@ -634,6 +687,53 @@ cardEl.addEventListener('mouseleave', () => {
         f.style.transform = 'translate(-50%, -50%) scale(1)';
     });
 });
+
+// =========================
+// TYPING EFFECT FOR "ABOUT ME"
+// =========================
+
+const typingElement = document.getElementById("about-typing");
+
+if (typingElement) {
+  const fullText = typingElement.getAttribute("data-text");
+  let charIndex = 0;
+  let isTypingStarted = false;
+
+  function typeWriter() {
+    if (charIndex < fullText.length) {
+      typingElement.textContent += fullText.charAt(charIndex);
+      charIndex++;
+      setTimeout(typeWriter, 25); // Speed of typing (lower = faster)
+    } else {
+      // Finished typing: remove the blinking cursor after 2 seconds
+      setTimeout(() => {
+        typingElement.style.setProperty("--cursor-display", "none");
+        // Or remove the pseudo-element class if you prefer:
+        typingElement.classList.add("typed-done");
+      }, 2000);
+    }
+  }
+
+  // Use Intersection Observer to trigger typing when scrolling into view
+  const observerOptions = {
+    root: null,
+    threshold: 0.3 // Triggers when 30% of the section is visible
+  };
+
+  const aboutObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !isTypingStarted) {
+        isTypingStarted = true;
+        typingElement.textContent = ""; // Clear initial text before typing
+        typeWriter();
+        observer.unobserve(entry.target); // Run only once
+      }
+    });
+  }, observerOptions);
+
+  aboutObserver.observe(document.querySelector(".about"));
+}
+
 
 /* =========================
    IDLE SCREEN SYSTEM (Updated)
