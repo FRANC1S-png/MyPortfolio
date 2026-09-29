@@ -224,48 +224,6 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   touch-action: none; /* 🚫 ปิด pinch/scroll ตอนลาก */
 }
 
-/* ========== LANGUAGE DROPDOWN ========== */
-
-.lang-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.lang-btn {
-  padding: 8px;
-  cursor: pointer;
-  background: #0b0b0b;
-  border: none;
-}
-
-.lang-menu {
-  display: none;
-  position: absolute;
-  top: 55px;
-  left: 0;
-
-  background: rgb(19, 19, 19);
-  border: 1px solid #000;
-  list-style: none;
-  padding: 5px;
-  margin: 0;
-
-  z-index: 19; /* ⭐ สำคัญ */
-}
-
-.lang-menu li a {
-  display: flex;              /* ⭐ */
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.lang-menu li a img {
-  pointer-events: none; /* ⭐ ให้คลิกที่ <a> แทน */
-}
 
 /* ========== card ======*/
 .info {

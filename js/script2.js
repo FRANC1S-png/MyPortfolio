@@ -262,7 +262,7 @@ function animate() {
 animate();
 
 // --- ส่วนที่ 3: ระบบ Hover ขยายเมาส์ ---
-const hoverElements = 'a, button, .card-shifter, .folder, .folder2, .folder3, .window-header, .window-header2, .window-header3, .lang-btn';
+const hoverElements = 'a, button, .card-shifter, .folder, .folder2, .folder3, .window-header, .window-header2, .window-header3';
 document.addEventListener('mouseover', (e) => {
     if (e.target.closest(hoverElements)) {
         followers.forEach(f => f.style.transform = 'translate(-50%, -50%) scale(2)');
@@ -279,23 +279,7 @@ document.addEventListener('mouseout', (e) => {
 ========================= */
 updateCardTransform();
 
-/*==================
-  LANG BUTTON
-====================*/  
 
-function toggleLang() {
-  const menu = document.getElementById("langMenu");
-  menu.style.display =
-    menu.style.display === "block" ? "none" : "block";
-}
-
-document.addEventListener("click", (e) => {
-  const dropdown = document.querySelector(".lang-dropdown");
-  const menu = document.getElementById("langMenu");
-  if (!dropdown.contains(e.target)) {
-    menu.style.display = "none";
-  }
-});
 
 /*===========================
   Open folder DOUBLE
