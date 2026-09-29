@@ -165,6 +165,26 @@ function startDrag(x, y) {
    DRAG MOVE
 ========================= */
 
+// function dragMove(x, y) {
+//   if (!isDragging) return;
+//   const deltaX = x - startX;
+//   const deltaY = y - startY;
+//   rotateY += deltaX * 0.3;
+//   rotateX -= deltaY * 0.3;
+//   rotateX = Math.max(-MAX_ROTATE_X, Math.min(MAX_ROTATE_X, rotateX));
+//   startX = x;
+//   startY = y;
+//   updateCardTransform();
+
+//   // คำนวณตำแหน่งแสงสะท้อนตามการขยับ
+//     const shineX = (x / window.innerWidth) * 100;
+//     const shineY = (y / window.innerHeight) * 100;
+//     card.style.setProperty('--shine-x', `${shineX}%`);
+//     card.style.setProperty('--shine-y', `${shineY}%`);
+
+//     updateCardTransform();
+// }
+
 function dragMove(x, y) {
   if (!isDragging) return;
   const deltaX = x - startX;
@@ -176,13 +196,13 @@ function dragMove(x, y) {
   startY = y;
   updateCardTransform();
 
-  // คำนวณตำแหน่งแสงสะท้อนตามการขยับ
-    const shineX = (x / window.innerWidth) * 100;
-    const shineY = (y / window.innerHeight) * 100;
-    card.style.setProperty('--shine-x', `${shineX}%`);
-    card.style.setProperty('--shine-y', `${shineY}%`);
-
-    updateCardTransform();
+  // 🌟 Calculate dynamic light reflection coords for the 3D card shine
+  const rect = card.getBoundingClientRect();
+  const shineX = ((x - rect.left) / rect.width) * 100;
+  const shineY = ((y - rect.top) / rect.height) * 100;
+  
+  card.style.setProperty('--shine-x', `${shineX}%`);
+  card.style.setProperty('--shine-y', `${shineY}%`);
 }
 
 /* =========================
@@ -688,9 +708,9 @@ cardEl.addEventListener('mouseleave', () => {
     });
 });
 
-// =========================
-// TYPING EFFECT FOR "ABOUT ME"
-// =========================
+/* =========================
+   TYPING EFFECT FOR "ABOUT ME"
+========================= */
 
 const typingElement = document.getElementById("about-typing");
 
@@ -703,37 +723,39 @@ if (typingElement) {
     if (charIndex < fullText.length) {
       typingElement.textContent += fullText.charAt(charIndex);
       charIndex++;
-      setTimeout(typeWriter, 25); // Speed of typing (lower = faster)
+      setTimeout(typeWriter, 25); // Typing speed
     } else {
-      // Finished typing: remove the blinking cursor after 2 seconds
       setTimeout(() => {
         typingElement.style.setProperty("--cursor-display", "none");
-        // Or remove the pseudo-element class if you prefer:
         typingElement.classList.add("typed-done");
       }, 2000);
     }
   }
 
-  // Use Intersection Observer to trigger typing when scrolling into view
+  // Adjusted observer options to work seamlessly on smaller mobile viewports
   const observerOptions = {
     root: null,
-    threshold: 0.3 // Triggers when 30% of the section is visible
+    // Lower threshold ensures it triggers even if the full section isn't completely in view yet
+    threshold: 0.1, 
+    rootMargin: "0px 0px -50px 0px" // Triggers slightly before scrolling completely into view
   };
 
   const aboutObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !isTypingStarted) {
         isTypingStarted = true;
-        typingElement.textContent = ""; // Clear initial text before typing
+        typingElement.textContent = ""; 
         typeWriter();
-        observer.unobserve(entry.target); // Run only once
+        observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
 
-  aboutObserver.observe(document.querySelector(".about"));
+  const aboutSection = document.querySelector(".about");
+  if (aboutSection) {
+    aboutObserver.observe(aboutSection);
+  }
 }
-
 
 /* =========================
    IDLE SCREEN SYSTEM (Updated)
@@ -821,3 +843,200 @@ function resetIdleTimer() {
 
 resetIdleTimer();
 window.addEventListener('resize', initIdleCanvas);
+
+// Keep windows inside viewport bounds on resize
+window.addEventListener('resize', () => {
+    const windows = document.querySelectorAll('.window, .window2, .window3, .window4');
+    windows.forEach(win => {
+        const rect = win.getBoundingClientRect();
+        if (rect.right > window.innerWidth) {
+            win.style.left = (window.innerWidth - rect.width - 20) + 'px';
+        }
+        if (rect.bottom > window.innerHeight) {
+            win.style.top = (window.innerHeight - rect.height - 20) + 'px';
+        }
+    });
+});
+
+/* =========================================
+   IPOD MULTI-SONG PLAYLIST & WINDOW LOGIC
+========================================= */
+
+// 1. Define your playlist
+const playlist = [
+  {
+    title: "Dreiton",
+    artist: "C418",
+    src: "src/Dreiton.mp3",
+    art: "src/album.jpg"
+  },
+  {
+    title: "Blind Spots",
+    artist: "C418",
+    src: "src/Blind Spots.mp3",
+    art: "src/album.jpg"
+  },
+  {
+    title: "Aria Math",
+    artist: "C418",
+    src: "src/Aria Math.mp3",
+    art: "src/album.jpg"
+  }
+];
+
+let currentSongIndex = 0;
+let isPlaying = false;
+
+// DOM Elements - Audio & iPod Interface
+const customAudio = document.getElementById('customAudio');
+const trackTitle = document.getElementById('trackTitle');
+const trackArtist = document.getElementById('trackArtist');
+const albumArt = document.getElementById('albumArt');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const centerBtn = document.getElementById('centerBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+
+// DOM Elements - Window Controls & Dragging
+const musicFolder = document.getElementById('musicFolder');
+const musicWindow = document.getElementById('musicWindow');
+const closeMusicWin = document.getElementById('closeMusicWin');
+const minimizeMusicWin = document.getElementById('minimizeMusicWin');
+const musicHeader = document.getElementById('musicHeader');
+
+// Load a specific song from the playlist
+function loadSong(index) {
+  const song = playlist[index];
+  trackTitle.textContent = song.title;
+  trackArtist.textContent = song.artist;
+  albumArt.src = song.art;
+  customAudio.src = song.src;
+}
+
+// Play or Pause
+function togglePlay() {
+  if (isPlaying) {
+    customAudio.pause();
+    playPauseBtn.textContent = '>||';
+  } else {
+    customAudio.play().catch(err => console.log("Playback error:", err));
+    playPauseBtn.textContent = '||';
+  }
+  isPlaying = !isPlaying;
+}
+
+// Next Song (`>>|` button)
+function nextSong() {
+  currentSongIndex = (currentSongIndex + 1) % playlist.length;
+  loadSong(currentSongIndex);
+  if (isPlaying) {
+    customAudio.play();
+  }
+}
+
+// Previous Song (`|<<` button)
+function prevSong() {
+  currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+  loadSong(currentSongIndex);
+  if (isPlaying) {
+    customAudio.play();
+  }
+}
+
+// Event Listeners for iPod wheel buttons
+if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlay);
+if (centerBtn) centerBtn.addEventListener('click', togglePlay);
+if (nextBtn) nextBtn.addEventListener('click', nextSong);
+if (prevBtn) prevBtn.addEventListener('click', prevSong);
+
+// Automatically go to the next song when the current one finishes
+customAudio.addEventListener('ended', () => {
+  nextSong();
+});
+
+// Update progress bar
+customAudio.addEventListener('timeupdate', () => {
+  if (customAudio.duration) {
+    const progressPercent = (customAudio.currentTime / customAudio.duration) * 100;
+    progressBar.style.width = `${progressPercent}%`;
+  }
+});
+
+// Click progress bar to seek
+if (progressContainer) {
+  progressContainer.addEventListener('click', (e) => {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    if (customAudio.duration) {
+      customAudio.currentTime = (clickX / width) * customAudio.duration;
+    }
+  });
+}
+
+// Initialize the first song when the script loads
+loadSong(currentSongIndex);
+
+
+/* =========================================
+   WINDOW CONTROLS (Open, Close, Minimize, Drag)
+========================================= */
+
+// 1. Double-click folder to open window and start playing
+if (musicFolder && musicWindow) {
+  musicFolder.addEventListener('dblclick', () => {
+    musicWindow.style.display = 'flex';
+    musicWindow.classList.remove('minimized');
+    if (!isPlaying) {
+      togglePlay();
+    }
+  });
+}
+
+// 2. Close button (Hides window and pauses music)
+if (closeMusicWin && musicWindow) {
+  closeMusicWin.addEventListener('click', () => {
+    musicWindow.style.display = 'none';
+    if (isPlaying) {
+      togglePlay();
+    }
+  });
+}
+
+// 3. Minimize button (Collapses window)
+if (minimizeMusicWin && musicWindow) {
+  minimizeMusicWin.addEventListener('click', () => {
+    musicWindow.classList.toggle('minimized');
+  });
+}
+
+// 4. Draggable Window Logic (Click and drag header to move)
+let isMusicDragging = false;
+let musicStartX = 0, musicStartY = 0;
+
+if (musicHeader && musicWindow) {
+  musicHeader.addEventListener('mousedown', (e) => {
+    isMusicDragging = true;
+    musicStartX = e.clientX - musicWindow.offsetLeft;
+    musicStartY = e.clientY - musicWindow.offsetTop;
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isMusicDragging) return;
+    let newX = e.clientX - musicStartX;
+    let newY = e.clientY - musicStartY;
+    
+    // Keep window inside screen boundaries
+    newX = Math.max(0, Math.min(window.innerWidth - musicWindow.offsetWidth, newX));
+    newY = Math.max(0, Math.min(window.innerHeight - musicWindow.offsetHeight, newY));
+
+    musicWindow.style.left = newX + 'px';
+    musicWindow.style.top = newY + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    isMusicDragging = false;
+  });
+}

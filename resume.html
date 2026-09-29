@@ -18,7 +18,52 @@
   <div class="cursor-follower"></div>
 
 
+  <!-- MUSIC APP FOLDER (Top Left) -->
+  <div class="folder-music" id="musicFolder">
+    <img src="src/folder.png" alt="Music Folder">
+    <span>Music.exe</span>
+  </div>
 
+  <!-- MUSIC PLAYER WINDOW (iPod Style) -->
+  <div class="window-music" id="musicWindow">
+    <div class="window-header-music" id="musicHeader">
+      <span>♪ Music Player</span>
+      <div class="window-controls">
+        <button id="minimizeMusicWin">_</button>
+        <button id="closeMusicWin">&times;</button>
+      </div>
+    </div>
+
+    <div class="window-content-music" id="musicContent">
+      <div class="ipod-body">
+        <!-- iPod Screen -->
+        <div class="ipod-screen">
+          <div class="ipod-header">Now Playing</div>
+          <!-- Add id="albumArt" here -->
+          <img src="src/album.jpg" alt="Album Art" class="album-art" id="albumArt">
+          <div class="track-info">
+            <h4 id="trackTitle">Song Title 1</h4>
+            <p id="trackArtist">Artist Name</p>
+          </div>
+          <div class="progress-bar-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+        </div>
+
+        <!-- Click Wheel (Make sure right and left buttons have IDs for next/prev) -->
+        <div class="ipod-wheel">
+          <span class="wheel-btn top">MENU</span>
+          <span class="wheel-btn left" id="prevBtn">|&lt;&lt;</span>
+          <span class="wheel-btn right" id="nextBtn">&gt;&gt;|</span>
+          <span class="wheel-btn bottom" id="playPauseBtn">&gt;||</span>
+          <div class="wheel-center" id="centerBtn"></div>
+        </div>
+
+        <!-- Audio element (it will load the active song dynamically) -->
+        <audio id="customAudio"></audio>
+      </div>
+    </div>
+  </div>
 
   <!-- HERO / CARD SCENE -->
   <section class="scene">
@@ -73,7 +118,7 @@
   <section class="about">
     <div class="about-text">
       <h2>About Me</h2>
-    <p id="about-typing" data-text="  Hello, my name is Treerawat Tanlahakit, but you can call me First. I am currently studying Information Technology.
+      <p id="about-typing" data-text="  Hello, my name is Treerawat Tanlahakit, but you can call me First. I am currently studying Information Technology.
       (IT)
       I enjoy learning web development, especially creating interactive user interfaces using HTML, CSS, and JavaScript.
       
@@ -130,10 +175,12 @@
   <!-- CONTACT -->
   <section class="contact">
     <h2>Contact</h2>
-    <a href="mailto:treerawat.t@nsru.ac.th"><img src="src/gmail.png" alt="gmail" width="130px" class="gmail"></a>
-    <a href="https://github.com/FRANC1S-png"><img src="src/github.png" alt="github" width="130px" class="github"></a>
-    <a href="https://www.linkedin.com/in/treerawat-tanlahakit-12b85438b/"><img src="src/linkedin.png" alt="linkedin"
-        width="130px"></a>
+    <div class="contact-links">
+      <a href="mailto:treerawat.t@nsru.ac.th"><img src="src/gmail.png" alt="gmail" class="gmail"></a>
+      <a href="https://github.com/FRANC1S-png"><img src="src/github.png" alt="github" class="github"></a>
+      <a href="https://www.linkedin.com/in/treerawat-tanlahakit-12b85438b/"><img src="src/linkedin.png"
+          alt="linkedin"></a>
+    </div>
   </section>
 
   <div id="overlap-warning"
@@ -196,6 +243,8 @@
     </div>
 
     <div class="window-content4" id="window-content4">
+      <iframe src="projects/คู่การใช้งานระบบนัดหมาย Line Chatbot.pdf" width="100%" height="600px" style="border: none;"
+        title="Embedded PDF"></iframe>
       <a href="projects/คู่การใช้งานระบบนัดหมาย Line Chatbot.pdf" download="projectsTreerawat">
         <button class="download-btn">Download My Projects</button>
       </a>

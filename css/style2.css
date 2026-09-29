@@ -29,54 +29,148 @@ body {
   color: #fff; 
   overflow-x: hidden;
 }
-/* ซ่อนเมาส์จริง */
-html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, .window-header3 {
+
+/* Hide default cursor on desktop, keep default on touch */
+html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, .window-header3, .window-header4 {
     cursor: none !important;
+}
+
+@media (hover: none) {
+  html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, .window-header3, .window-header4 {
+      cursor: auto !important;
+  }
+  .cursor-follower {
+      display: none !important;
+  }
 }
 
 .cursor-follower {
     position: fixed;
     width: 25px;
     height: 25px;
-    /* background: white; ใส่เป็นสีขาวทึบก่อนเพื่อทดสอบ */
     border: 2px solid white;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9999999; /* เลขเก้าเจ็ดตัวไปเลยครับ */
+    z-index: 9999999;
     left: -100px;
     top: -100px;
     transform: translate(-50%, -50%);
     will-change: left, top;
 }
 
-/* หางจางๆ */
 .cursor-follower:nth-child(2) { width: 18px; height: 18px; opacity: 0.6; }
 .cursor-follower:nth-child(3) { width: 12px; height: 12px; opacity: 0.4; }
 .cursor-follower:nth-child(4) { width: 8px; height: 8px; opacity: 0.2; }
 
-/* สไตล์ปกติ (สีขาว) อยู่ใน .cursor-follower อยู่แล้ว */
-
-/* สไตล์เมื่อเมาส์กลายเป็นสีดำ */
 .cursor-follower.black-mode {
     background: rgba(0, 0, 0, 0.2) !important;
     border-color: rgba(0, 0, 0, 0.8) !important;
 }
 
 /* ========== SCENE ========== */
+
+/* ========== 3D CARD SCENE & CARD STYLING ========== */
 .scene {
-    height: 100vh;      /* ล็อคความสูงไว้ 1 จอ */
-    position: relative; /* เปลี่ยนจาก sticky เป็น relative */
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    perspective: 1500px; /* Enhanced depth perception */
+}
+
+.card-shifter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90vw, 600px);
+    aspect-ratio: 600 / 350;
+    z-index: 1;
+    animation: none; 
+    cursor: grab;
+}
+
+.card-shifter:active {
+    cursor: grabbing;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.05s linear; 
+  border-radius: 18px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Card Faces & Real Thickness Effect */
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fdfdfd 0%, #e0e0e0 100%);
+  color: black;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255,255,255,0.8);
+  overflow: hidden;
+}
+
+/* 🌟 Holographic Foil Shine Layer */
+.card-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--shine-x, 50%) var(--shine-y, 50%),
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 70%
+  );
+  opacity: 0.6;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s;
+}
+
+.card-face.front {
+  transform: translateZ(2px); /* Gives physical thickness front layer */
+}
+
+.back {
+  color: black;
+  transform: rotateY(180deg) translateZ(2px); /* Gives physical thickness back layer */
+  background: linear-gradient(135deg, #fdfdfd 0%, #e0e0e0 100%);
+  text-align: center;
+}
+
+/* Real Card Edge / Thickness Simulation using Pseudo-element */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: linear-gradient(to right, #ccc, #888, #ccc);
+  transform: translateZ(-1px);
+  z-index: -1;
+}
+
+/* .scene {
+    height: 100vh;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 5;
     perspective: 1200px;
-}
+} */
 
-/* Drag Hint Styling */
 .drag-hint {
   position: absolute;
-  top: -40px; /* Position it above the card */
+  top: -40px;
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   background: rgba(0, 0, 0, 0.8);
@@ -93,26 +187,22 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-/* Show the hint when hovering over the card shifter or card */
 .card-shifter:hover .drag-hint {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-
-.card-shifter {
-    position: fixed;    /* ใช้ fixed เพื่อให้มันล็อคกลางจอจริงๆ */
+/* .card-shifter {
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: min(90vw, 600px);
     aspect-ratio: 600 / 350;
     z-index: 1;
-    /* ลบ animation-timeline เก่าออก เราจะใช้ JS คุมเพียวๆ เพื่อความเป๊ะ */
     animation: none; 
 }
 
-/* Layer เดิม: ตัวการ์ด 3D ของคุณ */
 .card {
   width: 100%;
   height: 100%;
@@ -121,7 +211,6 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   transition: transform 0.1s linear; 
 }
 
-/* สั่งให้การ์ดพลิกเมื่อ Hover (ด้านหลังจะไม่หายแล้ว) */
 .card-shifter:hover .card {
   transform: rotateY(180deg);
 }
@@ -135,13 +224,12 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   color: black;
 }
 
-
 .back {
   color: black;
   transform: rotateY(180deg);
   background: whitesmoke;
   text-align: center;
-}
+} */
 
 .line {
   width: 100%;
@@ -150,17 +238,6 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   padding-top: 50px;
 }
 
-/* อนิเมชั่นตอนเลื่อนจอลง */
-@keyframes fadeOutScroll {
-  0% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.5) translateZ(-500px) translateY(-100px); /* ถอยหลังและเลื่อนขึ้นเล็กน้อย */
-  }
-}
 /* ========== ABOUT ========== */
 .about {
     display: flex;
@@ -168,22 +245,17 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
     padding: 100px 10%;
     align-items: center;
     position: relative;
-    z-index: 10;      /* อยู่เหนือการ์ด */
+    z-index: 10;
     min-height: 100vh;
     margin-top: 5vh;    
-    padding-bottom: 100px;   /* เปลี่ยนจาก 50vh เป็น 0 หรือตามความเหมาะสม */
+    padding-bottom: 100px;
 }
 
 .about-text {
   flex: 1;
-  font-size: 18px;
+  font-size: clamp(14px, 2vw, 18px);
 }
 
-.about-visual img {
-  width: 160px;
-}
-
-/* Typing effect cursor */
 #about-typing::after {
   content: "|";
   display: inline-block;
@@ -206,27 +278,31 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
 .learning {
   z-index: 11;
   padding: 80px 10%;
-  margin-bottom: 500px;
+  margin-bottom: 300px;
 }
 
 .learning-cards {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   margin-top: 20px;
-  
 }
 
 .learn-card {
   padding: 20px;
   border: 1px solid #444;
   transition: transform 0.3s;
-}
-
-#learn-card {
+  background: #151515;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+}
+
+.learn-card img {
+  width: clamp(40px, 10vw, 70px);
+  height: auto;
+  object-fit: contain;
 }
 
 .learn-card:hover {
@@ -237,54 +313,44 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
 .contact {
   z-index: 15;
   padding: 80px 10%;
-  margin-bottom: 500px;
-  position: space-between;
+  margin-bottom: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
 }
 
-/* คลาสสำหรับทุก Section ที่ต้องการให้จางเมื่อเลื่อน */
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+}
+
+.contact img {
+  width: clamp(80px, 15vw, 130px);
+  height: auto;
+}
+
 .about, .learning, .folder-con, .contact {
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     will-change: opacity, transform;
-}a
-
-/* ส่วนข้อความพิเศษล่างสุด */
-.footer-warning {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'minecraft', monospace;
-    font-size: 2rem;
-    color: #ff4444;
-    opacity: 0;
-    transition: opacity 1s;
 }
 
 #overlap-warning {
     transition: opacity 0.4s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    /* ตัว cubic-bezier จะทำให้ตอนเด้งขึ้นมาดูมีแรงกระแทกมากขึ้น */
 }
 
 #card {
   user-select: none;
-  touch-action: none; /* 🚫 ปิด pinch/scroll ตอนลาก */
+  touch-action: none;
 }
 
-
-/* ========== card ======*/
+/* ========== CARD LAYOUT ========== */
 .info {
-  font-size: 16px;
-}
-
-#info-th{
-  position: absolute;
-  right: 170px;
-  top: 70px;
-  font-size: 16px;
-}
-
-.img-con {
-  margin-bottom: 120px;
+  font-size: clamp(12px, 2vw, 16px);
 }
 
 .fav {
@@ -294,38 +360,30 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   padding-top: 20px;
 }
 
-.fav p {
+.fav p, .int p {
   margin: 0;
   padding: 0;
 }
-
-.int p {
-  margin: 0;
-  padding: 0;
-}
-
-
 
 .download-btn {
   font-family: 'minecraft', monospace;
-  padding: 20px;
-  font-size: 16px;
+  padding: 15px 20px;
+  font-size: clamp(12px, 2vw, 16px);
   color: black;
   background-color: white;
   border: 4px solid black;
   border-radius: 4px;
   cursor: pointer;
-  margin: 20px;
-  align-items: center;
+  margin: 20px auto;
   display: flex;
-  justify-content: center
+  justify-content: center;
+  align-items: center;
 }
 
 .download-btn:hover {
   background-color: #eee;
   color: black;
 }
-
 
 .card-front-layout {
   display: flex;
@@ -349,21 +407,14 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
   min-height: 0; 
 }
 
-
 .left img {
-  width: clamp(80px, 22vw, 140px);
+  width: clamp(70px, 20vw, 140px);
   max-height: 35%;
   object-fit: contain;
 }
 
-
-.info {
-  font-size: clamp(12px, 2.8vw, 16px);
-}
-
-
-  .fav {
-  font-size: clamp(11px, 2.5vw, 14px);
+.fav {
+  font-size: clamp(10px, 2.2vw, 14px);
   margin-top: auto;
   line-height: 1.3;
   max-height: 30%;
@@ -377,12 +428,12 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
 }
 
 .right {
-max-width: 50%;
-margin-left: 0;
+  max-width: 50%;
+  margin-left: 0;
 }
 
 .int {
-  font-size: clamp(11px, 2.5vw, 14px);
+  font-size: clamp(10px, 2.2vw, 14px);
   margin-top: auto;
   line-height: 1.3;
   max-height: 30%;
@@ -392,18 +443,17 @@ margin-left: 0;
 .github {
   background-color: white;
   border-radius: 100%;
-  border-width: 1px;
 }
 
 /* ========== FOLDER ICON ========== */
-
 .folder-con {
   padding: 80px 10%;
   display: flex;
-  gap: 40px;
+  gap: 30px;
   flex-wrap: wrap;
+  justify-content: center;
   z-index: 12;
-  margin-bottom: 500px;
+  margin-bottom: 300px;
 }
 
 .folder-con h2 {
@@ -411,239 +461,79 @@ margin-left: 0;
   color: white;
   font-family: monospace;
   margin-bottom: 20px;
+  text-align: center;
 }
 
-/* Folder icon */
-.folder {
-  width: 80px;
+.folder, .folder2, .folder3, .folder4 {
+  width: 90px;
   text-align: center;
   cursor: default;
   user-select: none;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
-.folder img {
+.folder img, .folder2 img, .folder3 img, .folder4 img {
   width: 64px;
+  height: auto;
 }
 
-.folder span {
+.folder span, .folder2 span, .folder3 span, .folder4 span {
   font-size: 14px;
   color: white;
-}
-
-.folder:hover {
-  border: 2px double white;
-  /* transform: scale(1.1); */
-  /* transition: transform 0.2s; */
-}
-
-/* ---------- FOLDER 2 ========== */
-
-.folder2 {
-  width: 80px;
-  text-align: center;
-  cursor: default;
-  user-select: none;
-}
-
-.folder2 img {
-  width: 64px;
-}
-
-.folder2 span {
-  font-size: 14px;
-  color: white;
-}
-
-.folder2:hover {
-  border: 2px double white;
-  /* transform: scale(1.1); */
-  /* transition: transform 0.2s; */
-}
-
-/* ---------- FOLDER 3 ========== */
-
-.folder3 {
-  width: 80px;
-  text-align: center;
-  cursor: default;
-  user-select: none;
-}
-
-.folder3 img {
-  width: 64px;
-}
-
-.folder3 span {
-  font-size: 14px;
-  color: white;
-}
-
-.folder3:hover {
-  border: 2px double white;
-  /* transform: scale(1.1); */
-  /* transition: transform 0.2s; */
-}
-
-/* ---------- FOLDER 4 ========== */
-
-.folder4 {
-  width: 80px;
-  text-align: center;
-  cursor: default;
-  user-select: none;
-}
-
-.folder4 img {
-  width: 64px;
-}
-
-.folder4 span {
-  font-size: 14px;
-  color: white;
-}
-
-.folder4:hover {
-  border: 2px double white;
-  /* transform: scale(1.1); */
-  /* transition: transform 0.2s; */
-}
-
-#closeWin{
-    font-family: 'minecraft', monospace;
-    font-style: bold;
-    background: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-    float: right;
-    padding: 5px 15px;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 1;
-}
-
-/* -------- Window ---------- */
-.window {
-  font-family: 'minecraft', monospace;
-  position: fixed;
-  top: 100px;
-  left: 150px;
-  width: 50%;
-  height: 80vh;
-  background: white;
-  border: 5px solid white;
-  box-shadow: 0 20px 60px rgba(0,0,0,.5);
-  display: none;
-  overflow: hidden;
-  flex-direction: column;
-  animation: openWin .25s ease-out;
-}
-
-/* Header */
-.window-header {
-  height: 40px;
-  background: black;
-  border-radius: 5px 5px 0 0;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  cursor: grab;
-  position: relative;
-}
-
-.window-content {
   display: block;
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  background: white;
-  color: black;
-  border: 5px solid black;
-  width: 100%; /* บังคับเต็มความกว้าง */
-  pointer-events: auto;
-  position: relative;
-  overscroll-behavior: contain;
+  margin-top: 5px;
 }
 
-.window-content p {
-width: 100% !important; 
-    max-width: 100%;
-    font-size: clamp(16px, 4vw, 24px); /* ขนาดอักษรปรับตามจอ */
+.folder:hover, .folder2:hover, .folder3:hover, .folder4:hover {
+  border: 2px double white;
+  background: rgba(255,255,255,0.05);
 }
 
-.window-content img,
-.window-content2 img,
-.window-content3 img {
-  width: 100% !important; /* รูปจะขยายเต็มหน้าต่างเสมอ */
-    height: auto;
-    max-width: 1000px; /* แต่ไม่ให้ใหญ่เกินไปจนแตก */
-    margin: 0 auto 20px auto;
-    display: block;
-}
-
-
-.window-content::-webkit-scrollbar {
-  width: 10px;
-  background-color: #222;
-}
-
-.window-content::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 2px;
-}
-
-.window-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* -------- Window  2 ---------- */
-#closeWin2{
-    font-family: 'minecraft', monospace;
-    font-style: bold;
-    background: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-    float: right;
-    padding: 5px 15px;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 1;
-}
-
-.window2 {
+/* -------- Windows ---------- */
+.window, .window2, .window3, .window4 {
   font-family: 'minecraft', monospace;
   position: fixed;
-  top: 100px;
-  left: 150px;
-  width: 50%;
-  height: 80vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90vw, 700px);
+  height: min(85vh, 600px);
   background: white;
   border: 5px solid white;
   box-shadow: 0 20px 60px rgba(0,0,0,.5);
   display: none;
   overflow: hidden;
   flex-direction: column;
-  animation: openWin .25s ease-out;
+  z-index: 20;
 }
 
-/* Header */
-.window-header2 {
+.window-header, .window-header2, .window-header3, .window-header4 {
   height: 40px;
   background: black;
-  border-radius: 5px 5px 0 0;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 12px;
   cursor: grab;
-  position: relative;
+  user-select: none;
 }
 
-.window-content2 {
+[id^="closeWin"] {
+  font-family: 'minecraft', monospace;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 5px 15px;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.window-content, .window-content2, .window-content3, .window-content4 {
   display: block;
   flex: 1;
   overflow-y: auto !important;
@@ -651,141 +541,40 @@ width: 100% !important;
   background: white;
   color: black;
   border: 5px solid black;
-  width: 100%; /* บังคับเต็มความกว้าง */
+  width: 100%;
   pointer-events: auto;
   position: relative;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
-.window-content2 p {
+.window-content p, .window-content2 p, .window-content3 p, .window-content4 p {
   width: 100% !important; 
-    max-width: 100%;
-    font-size: clamp(16px, 4vw, 24px); /* ขนาดอักษรปรับตามจอ */
+  max-width: 100%;
+  font-size: clamp(14px, 3vw, 18px);
 }
 
-.window-content2::-webkit-scrollbar {
-  width: 10px;
-  background-color: #222;
-}
-
-.window-content2::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 2px;
-}
-
-.window-content2::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* -------- Window  3 ---------- */
-#closeWin3{
-    font-family: 'minecraft', monospace;
-    font-style: bold;
-    background: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-    float: right;
-    padding: 5px 15px;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 1;
-}
-
-
-.window3 {
-  font-family: 'minecraft', monospace;
-  position: fixed;
-  top: 100px;
-  left: 150px;
-  width: 40%;
-  height: 80vh;
-  background: white;
-  border: 5px solid white;
-  box-shadow: 0 20px 60px rgba(0,0,0,.5);
-  display: none;
-  overflow: hidden;
-  flex-direction: column;
-  animation: openWin .25s ease-out;
-}
-
-/* Header */
-.window-header3 {
-  height: 40px;
-  background: black;
-  border-radius: 5px 5px 0 0;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  cursor: grab;
-  position: relative;
-}
-
-.window-content3 {
+.window-content img, .window-content2 img, .window-content3 img, .window-content4 img {
+  width: 100% !important;
+  height: auto;
+  max-width: 1000px;
+  margin: 0 auto 20px auto;
   display: block;
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  background: white;
-  color: black;
-  border: 5px solid black;
-  width: 100%; /* บังคับเต็มความกว้าง */
-  pointer-events: auto;
-  position: relative;
-  overscroll-behavior: contain;
 }
 
-.window-content3 p {
-  width: 100% !important; 
-    max-width: 100%;
-    font-size: clamp(16px, 4vw, 24px); /* ขนาดอักษรปรับตามจอ */
-}
-
-.window-content3::-webkit-scrollbar {
-  width: 10px;
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
   background-color: #222;
 }
 
-.window-content3::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #555;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
-.window-content3::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.window,
-.window2,
-.window3 {
-    z-index: 20;
-    display: none; 
-    flex-direction: column;
-    /* ถ้ายกเลิกการลากกลางคัน ให้มันกลับมาอยู่กลางจอ */
-    max-width: 90vw;
-    max-height: 90vh;
-}
-
-.window-header,
-.window-header2,
-.window-header3 {
-  user-select: none;
-}
-
-.window-content, .window-content2, .window-content3 {
-    display: block;          /* มั่นใจว่าเป็นก้อน content */
-    flex: 1;                 /* ยืดให้เต็มหน้าต่าง */
-    overflow-y: auto !important; /* เปิด scrollbar */
-    max-height: 100%;
-    overscroll-behavior: contain; /* กักแรงเลื่อนไว้ในนี้ */
-    pointer-events: auto;    /* ให้คลิก/เลื่อนได้ */
-    -webkit-overflow-scrolling: touch; /* ให้มือถือเลื่อนลื่น */
-}
-
-/* idle screen */
-
+/* Idle Screen */
 #idle-screen {
     position: fixed;
     top: 0;
@@ -794,9 +583,8 @@ width: 100% !important;
     height: 100vh;
     background: black;
     z-index: 9999999;
-    display: none; /* เริ่มต้นซ่อนไว้ */
+    display: none;
     opacity: 0;
-    /* 💡 อนิเมชั่นจางเข้า-ออก 1 วินาที */
     transition: opacity 1s ease-in-out, visibility 1s; 
     pointer-events: none;
 }
@@ -806,7 +594,6 @@ width: 100% !important;
     pointer-events: auto;
 }
 
-/* เพิ่มให้ข้อความค่อยๆ ลอยขึ้นมาตอน Idle ทำงาน */
 .idle-text {
     position: absolute;
     bottom: 40px;
@@ -816,24 +603,246 @@ width: 100% !important;
     font-family: monospace;
     letter-spacing: 3px;
     text-transform: uppercase;
-    /* อนิเมชั่นเล็กๆ ให้ข้อความขยับขึ้นลงช้าๆ */
     animation: pulseText 3s ease-in-out infinite;
 }
 
+/* =========================
+   CUSTOM IPOD MUSIC PLAYER STYLES
+========================= */
+
+.folder-music {
+  width: 80px;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.folder-music img {
+  width: 48px;
+  height: auto;
+}
+
+.folder-music span {
+  font-size: 12px;
+  color: white;
+  display: block;
+  margin-top: 4px;
+  font-family: monospace;
+  text-shadow: 1px 1px 2px black;
+}
+
+.folder-music:hover {
+  border: 2px double white;
+  background: rgba(255,255,255,0.08);
+}
+
+/* The Main iPod Window Container */
+.window-music {
+  font-family: Arial, sans-serif;
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  width: 280px; /* Compact iPod width */
+  background: #cfd0d2;
+  border: 4px solid white;
+  box-shadow: 0 15px 40px rgba(0,0,0,.6);
+  display: none;
+  flex-direction: column;
+  z-index: 50;
+  overflow: hidden;
+  transition: height 0.2s ease;
+  border-radius: 12px;
+}
+
+/* Window Header Bar (Matches your retro theme) */
+.window-header-music {
+  height: 35px;
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  cursor: grab;
+  user-select: none;
+  font-size: 13px;
+  font-family: 'minecraft', monospace;
+}
+
+.window-header-music:active {
+  cursor: grabbing;
+}
+
+.window-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.window-controls button {
+  font-family: 'minecraft', monospace;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  font-weight: bold;
+}
+
+.window-controls button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Window Content Body (Classic iPod Silver Finish) */
+.window-content-music {
+  padding: 15px;
+  background: #cfd0d2; 
+  color: black;
+  border: 4px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ipod-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* iPod Backlit Screen */
+.ipod-screen {
+  width: 100%;
+  background: #e2f4fb; 
+  border: 3px solid #111;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.15);
+  color: #111;
+}
+
+.ipod-header {
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid #999;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.album-art {
+  width: 90px;
+  height: 90px;
+  border: 2px solid #333;
+  margin-bottom: 8px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.track-info {
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.track-info h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-info p {
+  margin: 2px 0 0 0;
+  font-size: 10px;
+  color: #555;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  width: 100%;
+  height: 6px;
+  background: #ccc;
+  border-radius: 3px;
+  border: 1px solid #888;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #0078d7; 
+}
+
+/* Classic iPod Click Wheel */
+.ipod-wheel {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  background: #f4f4f4;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 0 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+}
+
+.wheel-center {
+  width: 50px;
+  height: 50px;
+  background: #e5e5e5;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.wheel-btn {
+  position: absolute;
+  font-size: 10px;
+  font-weight: bold;
+  color: #777;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wheel-btn.top { top: 12px; }
+.wheel-btn.bottom { bottom: 12px; }
+.wheel-btn.left { left: 12px; }
+.wheel-btn.right { right: 12px; }
+
+.wheel-btn:active, .wheel-center:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+
+/* Window Minimized State */
+.window-music.minimized .window-content-music {
+  display: none;
+}
+
+.window-music.minimized {
+  height: 35px !important;
+}
 
 @keyframes pulseText {
     0%, 100% { opacity: 0.3; transform: translateY(0); }
     50% { opacity: 0.7; transform: translateY(-5px); }
-}
-@keyframes openWin {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 @keyframes shake {
@@ -847,105 +856,4 @@ width: 100% !important;
 
 #overlap-warning.active {
     animation: shake 0.5s infinite;
-}
-
-/* ========== RESPONSIVE ====== */
-@media (max-width: 480px) {
-
-  .card-front-layout {
-    gap: 12px;
-  }
-
- .left {
-    width: 45%;
-  }
-
-  .left h1 {
-    font-size: 14px;
-    text-align: center;
-  }
-
-  .left img {
-    width: 90px;
-    height: auto;
-  }
-
-  .fav {
-    position: static;
-    width: 100%;
-  }
-
-  .right.info {
-    width: 100%;
-    margin: 0;
-    margin-top: 2%;
-    font-size: 10px;
-  }
-
-  .info {
-    font-size: 8px;
-  }
-
-  .fav,
-  .int {
-    font-size: 8px;
-  }
-
-  .window-content img,
-  .window-content2 img,
-  .window-content3 img {
-    width: 100% !important; 
-    max-width: 1000px; /* กำหนดขนาดสูงสุดที่ยอมรับได้ */
-    height: auto;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .learning img {
-    width: 50px;
-    height: auto;
-  } 
-
-  .contact img {
-    width: 50px;
-    height: auto;
-  }
-
-  .learning {
-    width: 100%;
-  }
-
-
-  .window,
-  .window2 {
-    width: 95vw;
-    height: 85vh;
-
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .window3 {
-    width: 90vw;
-    height: auto;
-    max-height: 60vh;
-
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-   .window-content,
-  .window-content2,
-  .window-content3 {
-    padding: 10px;
-  }
-
-  .window-content p,
-  .window-content2 p {
-    width: 100%;
-    font-size: 16px;
-  }
-
 }
