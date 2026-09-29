@@ -73,6 +73,33 @@ html, body, .scene, a, button, [id^="folder"], .window-header, .window-header2, 
     perspective: 1200px;
 }
 
+/* Drag Hint Styling */
+.drag-hint {
+  position: absolute;
+  top: -40px; /* Position it above the card */
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+  z-index: 10;
+  font-family: monospace;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* Show the hint when hovering over the card shifter or card */
+.card-shifter:hover .drag-hint {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
 .card-shifter {
     position: fixed;    /* ใช้ fixed เพื่อให้มันล็อคกลางจอจริงๆ */
     top: 50%;
